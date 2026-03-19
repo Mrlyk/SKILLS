@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: Interactively grill the user about their plan or design through relentless, structured questioning until every branch of the decision tree is resolved. Use when user explicitly asks to be grilled, stress-tested, or challenged on a plan. Trigger phrases include "grill me", "挑挑毛病", "帮我过一下方案", "盘一下".
+description: Interactively grill the user about their plan or design through relentless, structured questioning until every branch of the decision tree is resolved. Use when user explicitly asks to be grilled, stress-tested, or challenged on a plan. Trigger phrases include "grill me", "挑挑毛病", "过一下方案", "方案行不行", "方案靠谱吗".
 ---
 
 Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one.
