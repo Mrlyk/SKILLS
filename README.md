@@ -1,111 +1,103 @@
 <div align="center">
 
-# 🤖 SKILLS
+# SKILLS
 
-**A curated personal collection of Agent Skills — reusable prompts and instructions for AI agents.**
+**AI Agent Skill 个人收藏库**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mrlyk/SKILLS/pulls)
-[![Skills Count](https://img.shields.io/badge/skills-1-orange.svg)](#-skill-library)
+[![Skills Count](https://img.shields.io/badge/skills-1-orange.svg)](#-skill-收藏库)
 
-[English](#-about) · [简体中文](#-关于)
+[English](README_EN.md)
 
 </div>
 
 ---
 
-## 📖 About
+## 关于
 
-**SKILLS** is a personal repository of AI agent skill prompts organized by category.
-Each skill is a carefully crafted prompt (or prompt template) that can be dropped into any agent framework — [GitHub Copilot](https://github.com/features/copilot), [OpenAI Assistants](https://platform.openai.com/docs/assistants/overview), [Claude Projects](https://www.anthropic.com/index/claude-projects), [AutoGPT](https://github.com/Significant-Gravitas/AutoGPT), and more.
+**SKILLS** 是一个按类别整理的 AI Agent Skill 个人收藏库，公开分享供参考。
 
-> **Goal:** Stop rewriting the same prompts. Save, version, and reuse the best ones.
+每个 Skill 来源于社区或个人实践积累，本仓库的定位是个人书签——记录那些值得保留和复用的 Skill，方便随时查阅。
 
----
-
-## 📖 关于
-
-**SKILLS** 是一个按类别整理的 AI Agent Skill Prompt 个人收藏库。
-每个 Skill 都是一个精心设计的提示词（或提示词模板），可以直接用于任何 Agent 框架，例如 [GitHub Copilot](https://github.com/features/copilot)、[OpenAI Assistants](https://platform.openai.com/docs/assistants/overview)、[Claude Projects](https://www.anthropic.com/index/claude-projects) 等。
-
-> **目标：** 不再重复编写相同的提示词，统一保存、版本管理并复用最优的 Skill。
+> 这不是一个框架或工具，只是一份以仓库形式维护的个人整理清单。
 
 ---
 
-## 📁 Repository Structure
+## 目录结构
 
 ```
 SKILLS/
-├── skills/                          # All agent skills, organized by folder
-│   └── skill-creator/               # Create, improve & benchmark agent skills
-│       ├── SKILL.md                 # Main skill definition
-│       ├── LICENSE.txt              # Apache 2.0 license
-│       ├── agents/                  # Sub-agent prompts (analyzer, comparator, grader)
-│       ├── assets/                  # HTML eval review template
-│       ├── eval-viewer/             # Eval result viewer scripts
-│       ├── references/              # Reference schemas
-│       └── scripts/                 # Python helper scripts (run_eval, run_loop, etc.)
+├── skills/                          # 所有 Skill，按文件夹分类
+│   └── skill-creator/               # 创建、优化并评测 Agent Skill
+│       ├── SKILL.md                 # Skill 主定义文件
+│       ├── LICENSE.txt              # Apache 2.0 协议
+│       ├── agents/                  # 子 Agent 提示词
+│       ├── assets/                  # 静态资源
+│       ├── eval-viewer/             # 评测结果查看脚本
+│       ├── references/              # 参考 Schema
+│       └── scripts/                 # Python 辅助脚本
 ├── .gitignore
 ├── LICENSE
-└── README.md
+├── README.md
+└── README_EN.md
 ```
 
 ---
 
-## 🚀 How to Use a Skill
+## 如何使用 Skill
 
-Each skill lives in its own folder under `skills/`. The main definition is always `SKILL.md`.
+每个 Skill 存放在 `skills/` 下各自独立的文件夹中，主定义文件统一为 `SKILL.md`。
 
-### 1 · Read the Skill Definition
+### 1 · 阅读 Skill 定义
 
-Open `skills/<skill-name>/SKILL.md`. The front-matter describes the skill's name and when it triggers, and the body explains how to use it.
+打开 `skills/<skill-name>/SKILL.md`，文件头部描述该 Skill 的名称与触发时机，正文说明具体使用方式。
 
-### 2 · Use the Skill with an Agent
+### 2 · 接入 Agent 平台
 
-Copy the content of `SKILL.md` into your agent's system prompt or skill instruction field. Different platforms have different names for this:
+将 `SKILL.md` 的内容复制到对应平台的系统提示词或 Skill 指令字段中：
 
-| Platform | Where to paste |
+| 平台 | 填写位置 |
 |---|---|
-| **GitHub Copilot** | `.github/copilot-instructions.md` or a chat session |
-| **Claude Projects** | Project Instructions field |
-| **OpenAI Assistants** | System instructions in the Assistants API |
-| **LangChain / AutoGPT** | `SystemMessage` or agent description |
+| **GitHub Copilot** | `.github/copilot-instructions.md` 或对话窗口 |
+| **Claude Projects** | Project Instructions 字段 |
+| **OpenAI Assistants** | Assistants API 的 System instructions |
+| **LangChain / AutoGPT** | `SystemMessage` 或 agent description |
 
-### 3 · Use Supporting Files (if present)
+### 3 · 使用附属文件（如有）
 
-Some skills include:
+部分 Skill 包含以下目录：
 
-| Directory | Purpose |
+| 目录 | 用途 |
 |---|---|
-| `agents/` | Sub-agent prompt files invoked by the main skill |
-| `scripts/` | Python helper scripts (e.g., run evals, generate reports) |
-| `eval-viewer/` | Tools for reviewing skill evaluation results |
-| `references/` | Schema definitions and reference documents |
-| `assets/` | Static assets (HTML templates, etc.) |
+| `agents/` | 主 Skill 调用的子 Agent 提示词 |
+| `scripts/` | Python 辅助脚本（评测、报告生成等） |
+| `eval-viewer/` | 评测结果查看工具 |
+| `references/` | Schema 定义与参考文档 |
+| `assets/` | 静态资源（HTML 模板等） |
 
 ---
 
-## 📚 Skill Library
+## Skill 收藏库
 
-| Skill | Description | Source |
+| Skill | 描述 | 来源 |
 |---|---|---|
-| [skill-creator](skills/skill-creator/SKILL.md) | Create new skills, modify and improve existing skills, and measure skill performance | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) |
+| [skill-creator](skills/skill-creator/SKILL.md) | 创建新 Skill、修改优化已有 Skill、评测 Skill 性能 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) |
 
 ---
 
-## ➕ Adding a New Skill
+## Skill 整理规范
 
-1. Create a new folder under `skills/<skill-name>/`.
-2. Add a `SKILL.md` as the main definition (see [anthropics/skills](https://github.com/anthropics/skills) for the standard format).
-3. Include any supporting `agents/`, `scripts/`, `assets/`, or `references/` as needed.
-4. Add a row to the table above.
-5. Open a Pull Request.
+每个 Skill 按以下约定存放在 `skills/<skill-name>/` 文件夹中：
+
+1. `SKILL.md` — Skill 主定义文件（格式参考 [anthropics/skills](https://github.com/anthropics/skills)）
+2. 附属目录（`agents/`、`scripts/`、`assets/`、`references/`）随原始 Skill 一并收录
+3. 在上方收藏库表格中补充一行索引
 
 ---
 
-## 📄 License
+## 许可证
 
-This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and share the prompts.
+本项目基于 [MIT License](LICENSE)，欢迎自由使用、修改和分享。
 
 ---
 
