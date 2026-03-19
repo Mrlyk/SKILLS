@@ -5,8 +5,8 @@
 **A curated personal collection of Agent Skills — reusable prompts and instructions for AI agents.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](docs/CONTRIBUTING.md)
-[![Skills Count](https://img.shields.io/badge/skills-3-orange.svg)](#-skill-library)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mrlyk/SKILLS/pulls)
+[![Skills Count](https://img.shields.io/badge/skills-1-orange.svg)](#-skill-library)
 
 [English](#-about) · [简体中文](#-关于)
 
@@ -36,20 +36,17 @@ Each skill is a carefully crafted prompt (or prompt template) that can be droppe
 
 ```
 SKILLS/
-├── skills/                    # All skill prompts, organized by category
-│   ├── code/                  # Coding & engineering skills
-│   │   └── code-review.md
-│   ├── writing/               # Writing & documentation skills
-│   │   └── readme-generator.md
-│   ├── data-analysis/         # Data analysis & visualization skills
-│   │   └── data-summary.md
-│   ├── research/              # Research & information retrieval skills
-│   └── productivity/          # Workflow & productivity skills
-├── examples/                  # End-to-end usage examples
-├── docs/
-│   ├── SKILL_TEMPLATE.md      # Template for adding new skills
-│   └── CONTRIBUTING.md        # Contribution guidelines
+├── skills/                          # All agent skills, organized by folder
+│   └── skill-creator/               # Create, improve & benchmark agent skills
+│       ├── SKILL.md                 # Main skill definition
+│       ├── LICENSE.txt              # Apache 2.0 license
+│       ├── agents/                  # Sub-agent prompts (analyzer, comparator, grader)
+│       ├── assets/                  # HTML eval review template
+│       ├── eval-viewer/             # Eval result viewer scripts
+│       ├── references/              # Reference schemas
+│       └── scripts/                 # Python helper scripts (run_eval, run_loop, etc.)
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
@@ -57,63 +54,52 @@ SKILLS/
 
 ## 🚀 How to Use a Skill
 
-### 1 · Copy the Prompt
+Each skill lives in its own folder under `skills/`. The main definition is always `SKILL.md`.
 
-Open any skill file under `skills/`, copy the prompt block, and paste it into your agent's system prompt or instruction field.
+### 1 · Read the Skill Definition
 
-### 2 · Fill in Parameters
+Open `skills/<skill-name>/SKILL.md`. The front-matter describes the skill's name and when it triggers, and the body explains how to use it.
 
-Each skill prompt uses `{parameter}` placeholders. Replace them with your actual input before sending.
+### 2 · Use the Skill with an Agent
 
-```markdown
-<!-- Example: skills/code/code-review.md -->
-{code} → paste your code snippet here
-```
+Copy the content of `SKILL.md` into your agent's system prompt or skill instruction field. Different platforms have different names for this:
 
-### 3 · Run with Your Agent
-
-You can use these skills with:
-
-| Platform | How to Use |
+| Platform | Where to paste |
 |---|---|
-| **GitHub Copilot** | Paste into a `.github/copilot-instructions.md` or a chat session |
-| **OpenAI Assistants** | Add as system instructions in the Assistants API |
-| **Claude Projects** | Paste into the Project Instructions field |
-| **LangChain / AutoGPT** | Use as a `SystemMessage` or agent description |
-| **Any Chat Interface** | Paste directly as your first message |
+| **GitHub Copilot** | `.github/copilot-instructions.md` or a chat session |
+| **Claude Projects** | Project Instructions field |
+| **OpenAI Assistants** | System instructions in the Assistants API |
+| **LangChain / AutoGPT** | `SystemMessage` or agent description |
+
+### 3 · Use Supporting Files (if present)
+
+Some skills include:
+
+| Directory | Purpose |
+|---|---|
+| `agents/` | Sub-agent prompt files invoked by the main skill |
+| `scripts/` | Python helper scripts (e.g., run evals, generate reports) |
+| `eval-viewer/` | Tools for reviewing skill evaluation results |
+| `references/` | Schema definitions and reference documents |
+| `assets/` | Static assets (HTML templates, etc.) |
 
 ---
 
 ## 📚 Skill Library
 
-### 💻 Code
-
-| Skill | Description | Model |
+| Skill | Description | Source |
 |---|---|---|
-| [Code Review](skills/code/code-review.md) | Multi-dimension code review covering correctness, security, and performance | GPT-4o / Claude 3.5 |
-
-### ✍️ Writing
-
-| Skill | Description | Model |
-|---|---|---|
-| [README Generator](skills/writing/readme-generator.md) | Generate a professional GitHub README from a project description | GPT-4o / Claude 3.5 |
-
-### 📊 Data Analysis
-
-| Skill | Description | Model |
-|---|---|---|
-| [Data Summary](skills/data-analysis/data-summary.md) | Summarize a CSV/JSON dataset and surface key insights | GPT-4o |
+| [skill-creator](skills/skill-creator/SKILL.md) | Create new skills, modify and improve existing skills, and measure skill performance | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) |
 
 ---
 
 ## ➕ Adding a New Skill
 
-1. Copy [`docs/SKILL_TEMPLATE.md`](docs/SKILL_TEMPLATE.md) to the appropriate `skills/<category>/` folder.
-2. Fill in every section (overview, prompt, parameters, examples).
-3. Add a row to the table in this README.
-4. Open a Pull Request — contributions are welcome!
-
-See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
+1. Create a new folder under `skills/<skill-name>/`.
+2. Add a `SKILL.md` as the main definition (see [anthropics/skills](https://github.com/anthropics/skills) for the standard format).
+3. Include any supporting `agents/`, `scripts/`, `assets/`, or `references/` as needed.
+4. Add a row to the table above.
+5. Open a Pull Request.
 
 ---
 
