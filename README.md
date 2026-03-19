@@ -114,7 +114,7 @@ npx skills add Mrlyk/SKILLS -a claude-code -a cursor
 | [skill-creator](skills/skill-creator/SKILL.md) | 创建新 Skill、修改优化已有 Skill、评测 Skill 性能 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) |
 | [tdd](skills/tdd/SKILL.md) | 测试驱动开发（TDD），遵循红-绿-重构循环，适用于单元测试、功能测试及测试优先开发场景 | 个人整理 |
 | [canvas-design](skills/canvas-design/SKILL.md) | 根据设计哲学生成精美视觉设计，输出 .png 和 .pdf 文件，适用于海报、插画等静态视觉创作 | [anthropics/skills](https://github.com/anthropics/skills) |
-| [humanizer](skills/humanizer/SKILL.md) | 去除文本中的 AI 生成痕迹，消除夸大象征、宣传性语言、AI 词汇等模式，使文本更自然 | [anthropics/skills](https://github.com/anthropics/skills) |
+| [humanizer](skills/humanizer/SKILL.md) | 去除文本中的 AI 生成痕迹，消除夸大象征、宣传性语言、AI 词汇等模式，使文本更自然 | [blader/humanizer](https://github.com/blader/humanizer) |
 | [grill-me](skills/grill-me/SKILL.md) | 对方案进行结构化、无情追问，逐一解决决策树每个分支，适用于方案评审与压力测试 | 个人整理 |
 
 ---

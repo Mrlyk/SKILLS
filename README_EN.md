@@ -114,7 +114,7 @@ Some skills include the following standard directories:
 | [skill-creator](skills/skill-creator/SKILL.md) | Create new skills, modify and improve existing skills, and measure skill performance | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) |
 | [tdd](skills/tdd/SKILL.md) | Test-driven development (TDD) following the Red-Green-Refactor cycle, for unit tests, integration tests, and test-first workflows | Personal |
 | [canvas-design](skills/canvas-design/SKILL.md) | Generate beautiful visual designs with design philosophy, outputting .png and .pdf files for posters, artwork, and static visual pieces | [anthropics/skills](https://github.com/anthropics/skills) |
-| [humanizer](skills/humanizer/SKILL.md) | Remove AI-generated writing patterns from text — eliminates inflated symbolism, promotional language, AI vocabulary, and more | [anthropics/skills](https://github.com/anthropics/skills) |
+| [humanizer](skills/humanizer/SKILL.md) | Remove AI-generated writing patterns from text — eliminates inflated symbolism, promotional language, AI vocabulary, and more | [blader/humanizer](https://github.com/blader/humanizer) |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test plans through relentless structured questioning, resolving every branch of the decision tree one by one | Personal |
 
 ---
