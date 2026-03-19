@@ -5,7 +5,7 @@
 **AI Agent Skill 个人收藏库**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-1-orange.svg)](#-skill-收藏库)
+[![Skills Count](https://img.shields.io/badge/skills-5-orange.svg)](#-skill-收藏库)
 
 [English](README_EN.md)
 
@@ -28,14 +28,24 @@
 ```
 SKILLS/
 ├── skills/                          # 所有 Skill，按文件夹分类
-│   └── skill-creator/               # 创建、优化并评测 Agent Skill
-│       ├── SKILL.md                 # Skill 主定义文件
-│       ├── LICENSE.txt              # Apache 2.0 协议
-│       ├── agents/                  # 子 Agent 提示词
-│       ├── assets/                  # 静态资源
-│       ├── eval-viewer/             # 评测结果查看脚本
-│       ├── references/              # 参考 Schema
-│       └── scripts/                 # Python 辅助脚本
+│   ├── skill-creator/               # 创建、优化并评测 Agent Skill
+│   │   ├── SKILL.md
+│   │   ├── agents/
+│   │   ├── assets/
+│   │   ├── eval-viewer/
+│   │   ├── references/
+│   │   └── scripts/
+│   ├── tdd/                         # 测试驱动开发（TDD）
+│   │   ├── SKILL.md
+│   │   ├── mocking.md
+│   │   ├── refactoring.md
+│   │   └── tests.md
+│   ├── canvas-design/               # 生成精美视觉设计（.png/.pdf）
+│   │   └── SKILL.md
+│   ├── humanizer/                   # 去除文本 AI 生成痕迹
+│   │   └── SKILL.md
+│   └── grill-me/                    # 对方案进行结构化追问
+│       └── SKILL.md
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -102,6 +112,10 @@ npx skills add Mrlyk/SKILLS -a claude-code -a cursor
 | Skill | 描述 | 来源 |
 |---|---|---|
 | [skill-creator](skills/skill-creator/SKILL.md) | 创建新 Skill、修改优化已有 Skill、评测 Skill 性能 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) |
+| [tdd](skills/tdd/SKILL.md) | 测试驱动开发（TDD），遵循红-绿-重构循环，适用于单元测试、功能测试及测试优先开发场景 | 个人整理 |
+| [canvas-design](skills/canvas-design/SKILL.md) | 根据设计哲学生成精美视觉设计，输出 .png 和 .pdf 文件，适用于海报、插画等静态视觉创作 | [anthropics/skills](https://github.com/anthropics/skills) |
+| [humanizer](skills/humanizer/SKILL.md) | 去除文本中的 AI 生成痕迹，消除夸大象征、宣传性语言、AI 词汇等模式，使文本更自然 | [anthropics/skills](https://github.com/anthropics/skills) |
+| [grill-me](skills/grill-me/SKILL.md) | 对方案进行结构化、无情追问，逐一解决决策树每个分支，适用于方案评审与压力测试 | 个人整理 |
 
 ---
 

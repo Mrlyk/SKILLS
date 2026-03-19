@@ -5,7 +5,7 @@
 **A personal collection of AI Agent Skills**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-1-orange.svg)](#-skill-library)
+[![Skills Count](https://img.shields.io/badge/skills-5-orange.svg)](#-skill-library)
 
 [简体中文](README.md)
 
@@ -28,14 +28,24 @@ Each skill is sourced from the community or crafted from personal experience. Th
 ```
 SKILLS/
 ├── skills/                          # All agent skills, organized by folder
-│   └── skill-creator/               # Create, improve & benchmark agent skills
-│       ├── SKILL.md                 # Main skill definition
-│       ├── LICENSE.txt              # Apache 2.0 license
-│       ├── agents/                  # Sub-agent prompts (analyzer, comparator, grader)
-│       ├── assets/                  # HTML eval review template
-│       ├── eval-viewer/             # Eval result viewer scripts
-│       ├── references/              # Reference schemas
-│       └── scripts/                 # Python helper scripts (run_eval, run_loop, etc.)
+│   ├── skill-creator/               # Create, improve & benchmark agent skills
+│   │   ├── SKILL.md
+│   │   ├── agents/
+│   │   ├── assets/
+│   │   ├── eval-viewer/
+│   │   ├── references/
+│   │   └── scripts/
+│   ├── tdd/                         # Test-driven development (TDD)
+│   │   ├── SKILL.md
+│   │   ├── mocking.md
+│   │   ├── refactoring.md
+│   │   └── tests.md
+│   ├── canvas-design/               # Generate beautiful visual designs (.png/.pdf)
+│   │   └── SKILL.md
+│   ├── humanizer/                   # Remove AI-generated writing patterns from text
+│   │   └── SKILL.md
+│   └── grill-me/                    # Stress-test plans through structured questioning
+│       └── SKILL.md
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -102,6 +112,10 @@ Some skills include the following standard directories:
 | Skill | Description | Source |
 |---|---|---|
 | [skill-creator](skills/skill-creator/SKILL.md) | Create new skills, modify and improve existing skills, and measure skill performance | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) |
+| [tdd](skills/tdd/SKILL.md) | Test-driven development (TDD) following the Red-Green-Refactor cycle, for unit tests, integration tests, and test-first workflows | Personal |
+| [canvas-design](skills/canvas-design/SKILL.md) | Generate beautiful visual designs with design philosophy, outputting .png and .pdf files for posters, artwork, and static visual pieces | [anthropics/skills](https://github.com/anthropics/skills) |
+| [humanizer](skills/humanizer/SKILL.md) | Remove AI-generated writing patterns from text — eliminates inflated symbolism, promotional language, AI vocabulary, and more | [anthropics/skills](https://github.com/anthropics/skills) |
+| [grill-me](skills/grill-me/SKILL.md) | Stress-test plans through relentless structured questioning, resolving every branch of the decision tree one by one | Personal |
 
 ---
 
