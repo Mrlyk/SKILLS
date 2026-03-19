@@ -54,26 +54,46 @@ Open `skills/<skill-name>/SKILL.md`. The front-matter describes the skill's name
 
 ### 2 · Use the Skill with an Agent
 
-Copy the content of `SKILL.md` into your agent's system prompt or skill instruction field. Different platforms have different names for this:
+Copy the skill folder to the designated path for your platform. The agent will load it automatically based on the description, or you can invoke it manually with `/skill-name`:
 
-| Platform | Where to paste |
-|---|---|
-| **GitHub Copilot** | `.github/copilot-instructions.md` or a chat session |
-| **Claude Projects** | Project Instructions field |
-| **OpenAI Assistants** | System instructions in the Assistants API |
-| **LangChain / AutoGPT** | `SystemMessage` or agent description |
+| Platform | Project-level path | User-level path |
+|---|---|---|
+| **Cursor** | `.cursor/skills/<name>/` | `~/.cursor/skills/<name>/` |
+| **Claude Code** | `.claude/skills/<name>/` | `~/.claude/skills/<name>/` |
+| **GitHub Copilot** | `.github/skills/<name>/` | `~/.copilot/skills/<name>/` |
+| **OpenAI Codex** | — | `~/.codex/skills/<name>/` |
+| **Gemini CLI** | `.gemini/skills/<name>/` | `~/.gemini/skills/<name>/` |
+| **Kiro** | `.kiro/skills/<name>/` | `~/.kiro/skills/<name>/` |
+| **Qwen Code** | `.qwen/skills/<name>/` | `~/.qwen/skills/<name>/` |
+| **OpenClaw** | `skills/<name>/` | `~/.openclaw/skills/<name>/` |
+| **Antigravity** | `.agent/skills/<name>/` | `~/.agent/skills/<name>/` |
+| **Qoder** | `.qoder/skills/<name>/` | `~/.qoder/skills/<name>/` |
+
+You can also use the [vercel-labs/skills](https://github.com/vercel-labs/skills) CLI to install in one step. It supports 40+ platforms and automatically detects installed agents to write to the correct path:
+
+```bash
+# Install all skills from this repository
+npx skills add Mrlyk/SKILLS
+
+# Install a specific skill
+npx skills add Mrlyk/SKILLS --skill skill-creator
+
+# Install globally (available across all projects)
+npx skills add Mrlyk/SKILLS -g
+
+# Install to specific agents
+npx skills add Mrlyk/SKILLS -a claude-code -a cursor
+```
 
 ### 3 · Use Supporting Files (if present)
 
-Some skills include:
+Some skills include the following standard directories:
 
 | Directory | Purpose |
 |---|---|
-| `agents/` | Sub-agent prompt files invoked by the main skill |
-| `scripts/` | Python helper scripts (e.g., run evals, generate reports) |
-| `eval-viewer/` | Tools for reviewing skill evaluation results |
-| `references/` | Schema definitions and reference documents |
-| `assets/` | Static assets (HTML templates, etc.) |
+| `scripts/` | Executable code (Python, Bash, etc.) invoked by the skill at runtime |
+| `references/` | Documentation (API guides, examples, etc.) loaded by the agent as needed |
+| `assets/` | Templates, fonts, icons, and other static resources used in output |
 
 ---
 
@@ -90,7 +110,7 @@ Some skills include:
 Each skill lives in its own folder under `skills/<skill-name>/` following the structure below:
 
 1. `SKILL.md` — main skill definition (refer to [anthropics/skills](https://github.com/anthropics/skills) for the standard format)
-2. Supporting directories (`agents/`, `scripts/`, `assets/`, `references/`) are included when the original skill provides them
+2. Supporting directories (`scripts/`, `references/`, `assets/`) are included when the original skill provides them
 3. A row is added to the Skill Library table above for quick reference
 
 ---

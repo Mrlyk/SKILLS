@@ -54,26 +54,46 @@ SKILLS/
 
 ### 2 · 接入 Agent 平台
 
-将 `SKILL.md` 的内容复制到对应平台的系统提示词或 Skill 指令字段中：
+将 Skill 文件夹整体复制到对应平台的指定路径，Agent 将根据 description 自动加载，或通过 `/skill-name` 手动调用：
 
-| 平台 | 填写位置 |
-|---|---|
-| **GitHub Copilot** | `.github/copilot-instructions.md` 或对话窗口 |
-| **Claude Projects** | Project Instructions 字段 |
-| **OpenAI Assistants** | Assistants API 的 System instructions |
-| **LangChain / AutoGPT** | `SystemMessage` 或 agent description |
+| 平台 | 项目级路径（当前项目）| 用户级路径（所有项目）|
+|---|---|---|
+| **Cursor** | `.cursor/skills/<name>/` | `~/.cursor/skills/<name>/` |
+| **Claude Code** | `.claude/skills/<name>/` | `~/.claude/skills/<name>/` |
+| **GitHub Copilot** | `.github/skills/<name>/` | `~/.copilot/skills/<name>/` |
+| **OpenAI Codex** | — | `~/.codex/skills/<name>/` |
+| **Gemini CLI** | `.gemini/skills/<name>/` | `~/.gemini/skills/<name>/` |
+| **Kiro** | `.kiro/skills/<name>/` | `~/.kiro/skills/<name>/` |
+| **Qwen Code** | `.qwen/skills/<name>/` | `~/.qwen/skills/<name>/` |
+| **OpenClaw** | `skills/<name>/` | `~/.openclaw/skills/<name>/` |
+| **Antigravity** | `.agent/skills/<name>/` | `~/.agent/skills/<name>/` |
+| **Qoder** | `.qoder/skills/<name>/` | `~/.qoder/skills/<name>/` |
+
+也可以使用 [vercel-labs/skills](https://github.com/vercel-labs/skills) 提供的 CLI 工具一键安装，支持 40+ 平台，会自动检测当前环境已安装的 Agent 并写入对应路径：
+
+```bash
+# 安装本仓库中的所有 Skill
+npx skills add Mrlyk/SKILLS
+
+# 仅安装指定 Skill
+npx skills add Mrlyk/SKILLS --skill skill-creator
+
+# 安装到全局（所有项目可用）
+npx skills add Mrlyk/SKILLS -g
+
+# 安装到指定平台
+npx skills add Mrlyk/SKILLS -a claude-code -a cursor
+```
 
 ### 3 · 使用附属文件（如有）
 
-部分 Skill 包含以下目录：
+部分 Skill 包含以下标准目录：
 
 | 目录 | 用途 |
 |---|---|
-| `agents/` | 主 Skill 调用的子 Agent 提示词 |
-| `scripts/` | Python 辅助脚本（评测、报告生成等） |
-| `eval-viewer/` | 评测结果查看工具 |
-| `references/` | Schema 定义与参考文档 |
-| `assets/` | 静态资源（HTML 模板等） |
+| `scripts/` | 可执行代码（Python、Bash 等），Skill 运行时调用 |
+| `references/` | 文档资料（API 指南、示例等），Claude 按需加载 |
+| `assets/` | 模板、字体、图标等静态资源，用于生成输出 |
 
 ---
 
@@ -90,7 +110,7 @@ SKILLS/
 每个 Skill 按以下约定存放在 `skills/<skill-name>/` 文件夹中：
 
 1. `SKILL.md` — Skill 主定义文件（格式参考 [anthropics/skills](https://github.com/anthropics/skills)）
-2. 附属目录（`agents/`、`scripts/`、`assets/`、`references/`）随原始 Skill 一并收录
+2. 附属目录（`scripts/`、`references/`、`assets/`）随原始 Skill 一并收录
 3. 在上方收藏库表格中补充一行索引
 
 ---
