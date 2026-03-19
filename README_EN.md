@@ -5,7 +5,7 @@
 **A personal collection of AI Agent Skills**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-5-orange.svg)](#-skill-library)
+[![Skills Count](https://img.shields.io/badge/skills-6-orange.svg)](#-skill-library)
 
 [简体中文](README.md)
 
@@ -44,7 +44,9 @@ SKILLS/
 │   │   └── SKILL.md
 │   ├── humanizer/                   # Remove AI-generated writing patterns from text
 │   │   └── SKILL.md
-│   └── grill-me/                    # Stress-test plans through structured questioning
+│   ├── grill-me/                    # Stress-test plans through structured questioning
+│   │   └── SKILL.md
+│   └── clarify-first/               # Clarify before coding — no guessing
 │       └── SKILL.md
 ├── .gitignore
 ├── LICENSE
@@ -116,6 +118,7 @@ Some skills include the following standard directories:
 | [canvas-design](skills/canvas-design/SKILL.md) | Generate beautiful visual designs with design philosophy, outputting .png and .pdf files for posters, artwork, and static visual pieces | [anthropics/skills](https://github.com/anthropics/skills) |
 | [humanizer](skills/humanizer/SKILL.md) | Remove AI-generated writing patterns from text — eliminates inflated symbolism, promotional language, AI vocabulary, and more | [blader/humanizer](https://github.com/blader/humanizer) |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test plans through relentless structured questioning, resolving every branch of the decision tree one by one | Personal |
+| [clarify-first](skills/clarify-first/SKILL.md) | Proactively clarify unknowns before writing code — no guessing, no premature implementation | Personal |
 
 ---
 
