@@ -46,8 +46,11 @@ SKILLS/
 │   │   └── SKILL.md
 │   ├── grill-me/                    # 对方案进行结构化追问
 │   │   └── SKILL.md
-│   └── clarify-first/               # 先澄清再动手，杜绝猜测式开发
-│       └── SKILL.md
+│   ├── ask-me/                      # 先问清楚再动手，杜绝猜测式开发
+│   │   └── SKILL.md
+│   └── clarify-first/               # [已废弃] 已迁移至 ask-me
+│       ├── SKILL.md
+│       └── README.md
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -118,7 +121,7 @@ npx skills add Mrlyk/SKILLS -a claude-code -a cursor
 | [canvas-design](skills/canvas-design/SKILL.md) | 根据设计哲学生成精美视觉设计，输出 .png 和 .pdf 文件，适用于海报、插画等静态视觉创作 | [anthropics/skills](https://github.com/anthropics/skills) |
 | [humanizer](skills/humanizer/SKILL.md) | 去除文本中的 AI 生成痕迹，消除夸大象征、宣传性语言、AI 词汇等模式，使文本更自然 | [blader/humanizer](https://github.com/blader/humanizer) |
 | [grill-me](skills/grill-me/SKILL.md) | 对方案进行结构化、无情追问，逐一解决决策树每个分支，适用于方案评审与压力测试 | 个人整理 |
-| [clarify-first](skills/clarify-first/SKILL.md) | 执行任务前主动追问不确定点，杜绝猜测式开发，适用于需求模糊或缺少关键上下文的场景 | 个人整理 |
+| [ask-me](skills/ask-me/SKILL.md) | 执行任务前主动追问不确定点，杜绝猜测式开发，适用于需求模糊或缺少关键上下文的场景 | 个人整理 |
 
 ---
 
