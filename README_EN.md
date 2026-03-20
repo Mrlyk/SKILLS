@@ -5,7 +5,7 @@
 **A personal collection of AI Agent Skills**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-6-orange.svg)](#-skill-library)
+[![Skills Count](https://img.shields.io/badge/skills-7-orange.svg)](#-skill-library)
 
 [简体中文](README.md)
 
@@ -48,9 +48,15 @@ SKILLS/
 │   │   └── SKILL.md
 │   ├── ask-me/                      # Ask before coding — no guessing
 │   │   └── SKILL.md
-│   └── clarify-first/               # [Deprecated] Migrated to ask-me
-│       ├── SKILL.md
-│       └── README.md
+│   ├── clarify-first/               # [Deprecated] Migrated to ask-me
+│   │   ├── SKILL.md
+│   │   └── README.md
+│   └── ui-design/                   # UI frontend design skill collection
+│       ├── README.md
+│       ├── frontend-design/         # Core skill (with reference/)
+│       ├── audit/                   # Interface quality audit
+│       ├── polish/                  # Final polish before shipping
+│       └── ...                      # 17 more design command skills
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -122,6 +128,7 @@ Some skills include the following standard directories:
 | [humanizer](skills/humanizer/SKILL.md) | Remove AI-generated writing patterns from text — eliminates inflated symbolism, promotional language, AI vocabulary, and more | [blader/humanizer](https://github.com/blader/humanizer) |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test plans through relentless structured questioning, resolving every branch of the decision tree one by one | Personal |
 | [ask-me](skills/ask-me/SKILL.md) | Proactively clarify unknowns before writing code — no guessing, no premature implementation | Personal |
+| [ui-design](skills/ui-design/README.md) | A frontend design skill collection with a core skill (frontend-design) and 20 design commands covering the full workflow: diagnose, structure, visual enhancement, experience layer, and hardening | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
 
 ---
 
