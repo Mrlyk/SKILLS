@@ -43,7 +43,7 @@ ask-me 的解法是：在实施之前，让 AI 走一遍信息扫描流程，主
 
 需求：「帮我给首页实现下拉刷新」
 
-![目标功能](https://gw.alicdn.com/imgextra/i4/O1CN01rDIGX11nLUN6Z4u57_!!6000000005073-1-tps-588-1280.gif?x-oss-process=image/resize,w_200)
+![目标功能](https://gw.alicdn.com/imgextra/i1/O1CN01Jj0qOL259jHnaJl8U_!!6000000007484-1-tps-380-838.gif)
 
 ### 对比
 
