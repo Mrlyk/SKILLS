@@ -48,6 +48,7 @@ ask-me 的解法是：在实施之前，让 AI 走一遍信息扫描流程，主
 ### 对比
 
 > 左边是没有 ask-me 的对话，右边是有 ask-me 的对话
+
 ![2026-03-24 23.06.34](https://liaoyk-markdown.oss-cn-hangzhou.aliyuncs.com/markdownImg_2023/2026-03-24%2023.06.34.gif)
 
 有 ask-me 的对话，AI 在开始写代码之前，先问了我两个问题：
