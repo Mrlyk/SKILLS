@@ -83,7 +83,7 @@ which utoo-proxy || echo ~/.utoo-proxy/utoo-proxy
 
 **此步骤需要用户手动完成。** 告知用户以下内容后等待其确认：
 
-- **Claude Code / Codex：** 请重启当前 AI 工具，重启后会自动弹出浏览器授权页面，在授权页面完成登录后告诉我已完成。
+- **Claude Code / Codex：** 必须手动重启当前 AI 工具，重启后会自动弹出浏览器授权页面，在授权页面完成登录后告诉我已完成。
 - **其他工具（Cursor / VSCode / Qoder / QoderWork / CoPaw）：** 请在自动弹出的授权页面完成登录后告诉我已完成，无需重启。
 
 用户确认授权完成后继续第五步。
