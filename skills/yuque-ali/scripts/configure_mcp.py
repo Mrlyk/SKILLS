@@ -2,9 +2,14 @@
 """
 configure_mcp.py — 为已安装的 AI 工具注入语雀 MCP 配置
 
+此脚本默认由同目录下的 `run_configure_mcp.sh` 调起。
+不要直接假设 `python` 可用或指向 Python 3。
+
 用法：
-  python configure_mcp.py              # 自动检测并配置所有已安装工具
-  python configure_mcp.py --tool cursor  # 只配置指定工具
+  sh run_configure_mcp.sh --tool cursor   # 推荐：明确指定目标工具
+  sh run_configure_mcp.sh                 # 兜底：自动检测并安装 Claude Code / Codex / Cursor
+
+可选工具名：claude / codex / cursor / vscode / qoder / qoderwork / copaw
 """
 
 import argparse
