@@ -144,6 +144,26 @@ def configure_mcpservers_json(config_path: Path, utoo_path: str, tool_label: str
     print(f"  [{tool_label}] 配置成功 → {config_path}")
 
 
+def configure_servers_json(config_path: Path, utoo_path: str, tool_label: str):
+    """向 VSCode 的 servers 格式 JSON 文件注入配置。"""
+    if is_already_configured_json(config_path, ["servers"]):
+        print(f"  [{tool_label}] 已配置 {SERVER_NAME}，跳过")
+        return
+
+    data = {}
+    if config_path.exists():
+        try:
+            data = json.loads(config_path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    entry = dict(MCPSERVERS_ENTRY)
+    entry["command"] = utoo_path
+    data.setdefault("servers", {})[SERVER_NAME] = entry
+    backup_and_write_json(config_path, data)
+    print(f"  [{tool_label}] 配置成功 → {config_path}")
+
+
 def configure_copaw(utoo_path: str):
     """向 CoPaw agent.json 的 mcp.clients 注入配置。"""
     config_path = Path.home() / ".copaw" / "workspaces" / "default" / "agent.json"
@@ -213,7 +233,7 @@ TOOL_CONFIGS = {
     "cursor": lambda utoo: configure_mcpservers_json(
         Path.home() / ".cursor" / "mcp.json", utoo, "Cursor"
     ),
-    "vscode": lambda utoo: configure_mcpservers_json(
+    "vscode": lambda utoo: configure_servers_json(
         Path.home() / "Library" / "Application Support" / "Code" / "User" / "mcp.json",
         utoo, "VSCode"
     ),
