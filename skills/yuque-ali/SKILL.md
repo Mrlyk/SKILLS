@@ -23,7 +23,7 @@ description: 阿里语雀文档读写工具。当用户需要读取、搜索、�
 | Codex | `.codex/skills/` | `~/.codex/skills/` |
 | Cursor | `.cursor/skills/` | `~/.cursor/skills/` |
 | Qoder | `.qoder/skills/` | `~/.qoder/skills/` |
-| QoderWork | — | `~/.qoder/skills/` |
+| QoderWork | — | `~/.qoderwork/skills/` |
 | CoPaw | — | `~/.copaw/workspaces/default/customized_skills/` |
 | 其他 | — | 请用户提供完整路径 |
 
