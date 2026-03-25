@@ -2,7 +2,9 @@
 
 在动手之前，先把不确定的事情问清楚。适用于方案清楚，但是怕 AI 理解偏差的场景。
 
-> 还有姐妹版：[grill-me](https://ali-skills.alibaba-inc.com/skills/liaoyikang.liaoyik/skills/grill-me) 技能，可以用来对方案进行结构化、无情追问，逐一解决决策树每个分支，适用于和 AI 探讨方案。
+> 还有姐妹版：[grill-me](https://ali-skills.alibaba-inc.com/skills/liaoyikang.liaoyik/skills/grill-me) 
+> - 方案想清楚了怕执行歪了：ask-me
+> - 方案没想清楚让 AI 帮着一起把把关：grill-me
 
 ## 简介
 
