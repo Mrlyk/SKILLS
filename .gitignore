@@ -19,5 +19,6 @@ temp/
 .agents/
 skills-lock.json
 
+.claude/skills/
 .claude/settings.json
 .claude/settings.local.json
