@@ -5,7 +5,7 @@
 **A personal collection of AI Agent Skills**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-9-orange.svg)](#-skill-library)
+[![Skills Count](https://img.shields.io/badge/skills-11-orange.svg)](#-skill-library)
 
 [简体中文](README.md)
 
@@ -56,6 +56,14 @@ SKILLS/
 │   │   └── references/
 │   ├── clarify-first/               # [Deprecated] Migrated to ask-me
 │   │   ├── SKILL.md
+│   │   └── README.md
+│   ├── anthropic-diagram/           # Anthropic blog-style editorial diagrams (.drawio)
+│   │   ├── skill.md
+│   │   ├── references/
+│   │   └── README.md
+│   ├── anthropic-svg/               # Anthropic blog-style editorial diagrams (.svg)
+│   │   ├── skill.md
+│   │   ├── references/
 │   │   └── README.md
 │   └── ui-design/                   # UI frontend design skill collection
 │       ├── README.md
@@ -137,6 +145,8 @@ Some skills include the following standard directories:
 | [holiday-enough](skills/holiday-enough/SKILL.md) | Assess if vacation days suffice for a travel destination, providing "plenty / just right / tight" verdicts with streamlined itinerary suggestions | Personal |
 | [time-calc](skills/time-calc/SKILL.md) | Date/time calculation and resolution with 7 atomic operations: current time, date metadata, relative weekday, date arithmetic, timezone conversion, and timestamp conversion across macOS/Linux/Windows | Personal |
 | [ui-design](skills/ui-design/README.md) | A frontend design skill collection with a core skill (frontend-design) and 20 design commands covering the full workflow: diagnose, structure, visual enhancement, experience layer, and hardening | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
+| [anthropic-diagram](skills/anthropic-diagram/skill.md) | Generate editorial-style diagrams in the Anthropic blog visual style as .drawio files, with warm semantic color system and 12 diagram patterns | Personal |
+| [anthropic-svg](skills/anthropic-svg/skill.md) | Generate editorial-style diagrams in the Anthropic blog visual style as native .svg files, no extra software needed, with 10 diagram patterns | Personal |
 
 ---
 
