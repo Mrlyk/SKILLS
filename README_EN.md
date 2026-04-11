@@ -145,7 +145,7 @@ Some skills include the following standard directories:
 | [holiday-enough](skills/holiday-enough/SKILL.md) | Assess if vacation days suffice for a travel destination, providing "plenty / just right / tight" verdicts with streamlined itinerary suggestions | Personal |
 | [time-calc](skills/time-calc/SKILL.md) | Date/time calculation and resolution with 7 atomic operations: current time, date metadata, relative weekday, date arithmetic, timezone conversion, and timestamp conversion across macOS/Linux/Windows | Personal |
 | [ui-design](skills/ui-design/README.md) | A frontend design skill collection with a core skill (frontend-design) and 20 design commands covering the full workflow: diagnose, structure, visual enhancement, experience layer, and hardening | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
-| [anthropic-diagram](skills/anthropic-diagram/skill.md) | Generate editorial-style diagrams in the Anthropic blog visual style as .drawio files, with warm semantic color system and 12 diagram patterns | Personal |
+| [anthropic-diagram](skills/anthropic-diagram/skill.md) | Generate editorial-style diagrams in the Anthropic blog visual style as .drawio files, with warm semantic color system and 12 diagram patterns | [dingtingli/dtl-skills](https://github.com/dingtingli/dtl-skills/tree/main) |
 | [anthropic-svg](skills/anthropic-svg/skill.md) | Generate editorial-style diagrams in the Anthropic blog visual style as native .svg files, no extra software needed, with 10 diagram patterns | Personal |
 
 ---

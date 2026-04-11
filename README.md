@@ -145,7 +145,7 @@ npx skills add Mrlyk/SKILLS -a claude-code -a cursor
 | [holiday-enough](skills/holiday-enough/SKILL.md) | 评估旅行目的地需要几天才能玩好，判断假期时间是否充足，给出"充裕/刚好/偏紧"评估和精简方案建议 | 个人整理 |
 | [time-calc](skills/time-calc/SKILL.md) | 日期时间计算与解析，7 个原子操作覆盖当前时间、日期元信息、相对星期、日期加减、时区转换、时间戳互转，支持 macOS/Linux/Windows | 个人整理 |
 | [ui-design](skills/ui-design/README.md) | UI 前端设计 Skill 合集，含核心 Skill（frontend-design）和 20 个设计命令，覆盖诊断、结构优化、视觉增强、体验层、加固完整工作流 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
-| [anthropic-diagram](skills/anthropic-diagram/skill.md) | 生成 Anthropic 博客风格的编辑型图表，输出 .drawio 文件，温暖简洁的语义化颜色系统，支持 12 种图表模式 | 个人整理 |
+| [anthropic-diagram](skills/anthropic-diagram/skill.md) | 生成 Anthropic 博客风格的编辑型图表，输出 .drawio 文件，温暖简洁的语义化颜色系统，支持 12 种图表模式 | [dingtingli/dtl-skills](https://github.com/dingtingli/dtl-skills/tree/main) |
 | [anthropic-svg](skills/anthropic-svg/skill.md) | 生成 Anthropic 博客风格的编辑型图表，输出原生 .svg 文件，无需安装额外软件，支持 10 种图表模式 | 个人整理 |
 
 ---
