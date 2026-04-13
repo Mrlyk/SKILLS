@@ -563,7 +563,7 @@ Before finalizing, verify:
 - Can any labels become free text instead of boxes?
 
 ### Connectors
-- Are any connectors overlapping? (Most critical check — see anti-overlap rules in skill.md)
+- Are any connectors overlapping? (Most critical check — see anti-overlap rules in SKILL.md)
 - Has each node's ports been distributed so no two connectors exit/enter the same port?
 - Are parallel connectors offset by at least 12px from each other?
 - Do unavoidable crossings have bridge arcs?
