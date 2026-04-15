@@ -66,12 +66,6 @@ Dimension names must match SKILL.md Gotcha #6 exactly: `Metadata` / `Context Bud
 - [<dimension>] <short description>
 
 (List only. No rewrite required for info-level findings.)
-
-## Top 3 Fixes (priority order)
-
-1. <rule> — expected impact: closes <N> critical violations
-2. <rule> — expected impact: ...
-3. <rule> — expected impact: ...
 ````
 
 ## Rating bands
