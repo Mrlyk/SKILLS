@@ -5,7 +5,7 @@
 **A personal collection of AI Agent Skills**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-11-orange.svg)](#-skill-library)
+[![Skills Count](https://img.shields.io/badge/skills-12-orange.svg)](#-skill-library)
 
 [简体中文](README.md)
 
@@ -65,6 +65,9 @@ SKILLS/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── README.md
+│   ├── evaluating-skills/           # Evaluate a SKILL.md against best practices
+│   │   ├── SKILL.md
+│   │   └── references/
 │   └── ui-design/                   # UI frontend design skill collection
 │       ├── README.md
 │       ├── frontend-design/         # Core skill (with reference/)
@@ -147,6 +150,7 @@ Some skills include the following standard directories:
 | [ui-design](skills/ui-design/README.md) | A frontend design skill collection with a core skill (frontend-design) and 20 design commands covering the full workflow: diagnose, structure, visual enhancement, experience layer, and hardening | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
 | [anthropic-diagram](skills/anthropic-diagram/SKILL.md) | Generate editorial-style diagrams in the Anthropic blog visual style as .drawio files, with warm semantic color system and 12 diagram patterns | [dingtingli/dtl-skills](https://github.com/dingtingli/dtl-skills/tree/main) |
 | [anthropic-svg](skills/anthropic-svg/SKILL.md) | Generate editorial-style diagrams in the Anthropic blog visual style as native .svg files, no extra software needed, with 10 diagram patterns | Personal |
+| [evaluating-skills](skills/evaluating-skills/SKILL.md) | Evaluate a single SKILL.md against Anthropic and agentskills.io best practices, producing per-dimension scores and actionable rewrite suggestions | Personal |
 
 ---
 

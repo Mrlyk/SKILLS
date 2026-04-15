@@ -5,7 +5,7 @@
 **AI Agent Skill 个人收藏库**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-11-orange.svg)](#-skill-收藏库)
+[![Skills Count](https://img.shields.io/badge/skills-12-orange.svg)](#-skill-收藏库)
 
 [English](README_EN.md)
 
@@ -65,6 +65,9 @@ SKILLS/
 │   ├── clarify-first/               # [已废弃] 已迁移至 ask-me
 │   │   ├── SKILL.md
 │   │   └── README.md
+│   ├── evaluating-skills/           # 评估 SKILL.md 是否符合最佳实践
+│   │   ├── SKILL.md
+│   │   └── references/
 │   └── ui-design/                   # UI 前端设计 Skill 合集
 │       ├── README.md
 │       ├── frontend-design/         # 核心 Skill（含 reference/）
@@ -147,6 +150,7 @@ npx skills add Mrlyk/SKILLS -a claude-code -a cursor
 | [ui-design](skills/ui-design/README.md) | UI 前端设计 Skill 合集，含核心 Skill（frontend-design）和 20 个设计命令，覆盖诊断、结构优化、视觉增强、体验层、加固完整工作流 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
 | [anthropic-diagram](skills/anthropic-diagram/SKILL.md) | 生成 Anthropic 博客风格的编辑型图表，输出 .drawio 文件，温暖简洁的语义化颜色系统，支持 12 种图表模式 | [dingtingli/dtl-skills](https://github.com/dingtingli/dtl-skills/tree/main) |
 | [anthropic-svg](skills/anthropic-svg/SKILL.md) | 生成 Anthropic 博客风格的编辑型图表，输出原生 .svg 文件，无需安装额外软件，支持 10 种图表模式 | 个人整理 |
+| [evaluating-skills](skills/evaluating-skills/SKILL.md) | 按 Anthropic 与 agentskills.io 最佳实践评估单个 SKILL.md，输出分维度评分与可执行的改写建议 | 个人整理 |
 
 ---
 
