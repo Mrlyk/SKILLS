@@ -1,0 +1,26 @@
+{
+  "skill_name": "tech-spec-html",
+  "evals": [
+    {
+      "id": 0,
+      "name": "partial-refund-prd",
+      "prompt": "帮我把这个需求写成 PRD：飞猪后台的退款流程要支持部分退款，目前只支持全额退款，需要支持按订单项（订单可能含多个商品行，比如机票+酒店+保险）粒度选择退款金额，要求保留原有的退款审核流程（>500 元走二级审批）。前端在订单详情页加退款入口，后端要兼容现有的全额退款接口，避免下游对账系统改造。文件放当前项目 docs/prd/ 下，文件名你定。",
+      "expected_output": "单页 HTML PRD，按背景/目标/技术方案/风险/影响范围/产研计划组织，包含部分退款的核心流程图（mermaid）、模块拆分表、对账兼容的风险分析；带 pub-prd 所需 meta（title/author/prd-date/prd-status）。未给出的具体字段 / 接口签名应标 TODO，不应编造。",
+      "assertions": []
+    },
+    {
+      "id": 1,
+      "name": "order-query-perf-prd",
+      "prompt": "给这个改造写一份技术方案 PRD：现在的订单详情查询接口性能有问题，单次 QPS 上千就开始超时（P99 从 200ms 飙到 3s+），需要做查询性能优化。方向是引入 Redis 缓存 + DB 索引重建。业务上读多写少，订单一旦完成基本不再变更。需要考虑缓存一致性、热点订单击穿、Redis 故障时的降级。写到 docs/prd/order-query-perf.html。",
+      "expected_output": "性能优化型 PRD，业务目标可压缩，重点在技术方案 + 详细设计 + 风险分析。包含调用链流程图（带缓存路径）、缓存策略对比表（Cache Aside vs Read Through 等）、风险表（穿透/雪崩/一致性 + 缓解方案）、灰度回滚计划。",
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "name": "meeting-notes-to-prd",
+      "prompt": "把这段会议纪要整理成 PRD HTML：刚开完会决定要给酒店 APP 加一个『最近浏览』入口。PM 张三、后端李四、前端王五、QA 赵六。开发上线截止下个月底。UI 走极简风格，要把用户最近 30 天浏览的酒店按时间倒序展示，点击进入酒店详情页。设计稿还没出，UI 那边说能在两周内出。数据怎么存还没定（讨论过本地存储和服务端存储两种）。文件放 docs/prd/recent-viewed-hotels.html。",
+      "expected_output": "产品向 PRD（不是纯技术方案），背景/目标/用户场景/功能描述/数据存储方案对比/产研计划。未决的事（数据存储方案、设计稿）应标 TODO 高亮，不应编造结论；明确的事（人员、截止日期、排序规则、跳转）应直接落进文档。",
+      "assertions": []
+    }
+  ]
+}

@@ -5,7 +5,7 @@
 **A personal collection of AI Agent Skills**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-12-orange.svg)](#-skill-library)
+[![Skills Count](https://img.shields.io/badge/skills-14-orange.svg)](#-skill-library)
 
 [简体中文](README.md)
 
@@ -68,6 +68,13 @@ SKILLS/
 │   ├── evaluating-skills/           # Evaluate a SKILL.md against best practices
 │   │   ├── SKILL.md
 │   │   └── references/
+│   ├── tech-spec-html/              # Turn a requirement/draft/meeting note into a single-page HTML tech spec
+│   │   ├── SKILL.md
+│   │   ├── assets/
+│   │   ├── references/
+│   │   └── evals/
+│   ├── clean-disk-space/            # Conservative disk space analysis & cleanup workflow
+│   │   └── SKILL.md
 │   └── ui-design/                   # UI frontend design skill collection
 │       ├── README.md
 │       ├── frontend-design/         # Core skill (with reference/)
@@ -151,6 +158,8 @@ Some skills include the following standard directories:
 | [anthropic-diagram](skills/anthropic-diagram/SKILL.md) | Generate editorial-style diagrams in the Anthropic blog visual style as .drawio files, with warm semantic color system and 12 diagram patterns | [dingtingli/dtl-skills](https://github.com/dingtingli/dtl-skills/tree/main) |
 | [anthropic-svg](skills/anthropic-svg/SKILL.md) | Generate editorial-style diagrams in the Anthropic blog visual style as native .svg files, no extra software needed, with 10 diagram patterns | Personal |
 | [evaluating-skills](skills/evaluating-skills/SKILL.md) | Evaluate a single SKILL.md against Anthropic and agentskills.io best practices, producing per-dimension scores and actionable rewrite suggestions | Personal |
+| [tech-spec-html](skills/tech-spec-html/SKILL.md) | Turn a requirement / draft thought / meeting note into a single-page HTML Tech Spec / Design Doc — 9 built-in visualization components (metric / compare / SVG architecture / flow / state machine / risk matrix / gantt …) with a 3-level TOC sidebar, supports both new creation and incremental update workflows | Personal |
+| [clean-disk-space](skills/clean-disk-space/SKILL.md) | Conservative disk space analysis & cleanup workflow — read-only analysis → report → dry-run → explicit approval → batched deletion → verification, cleaning only cache/log/temp/build artifacts while protecting data, projects, models, and toolchains by default | Personal |
 
 ---
 

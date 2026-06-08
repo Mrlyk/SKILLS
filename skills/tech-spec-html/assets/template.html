@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>需求标题</title>
+  <meta name="author" content="">
+  <meta name="date" content="">
+  <meta name="status" content="draft">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #faf8f3;
+      --bg-soft: #f3eee4;
+      --bg-card: #fdfcf8;
+      --fg: #1c1a17;
+      --muted: #6f6a60;
+      --subtle: #a39c8f;
+      --rule: #d9d2c2;
+      --ink: #1e3a5f;
+      --ink-soft: #4a5d7e;
+      --accent: #b8553c;
+      --accent-soft: #f3d8ce;
+      --warn-bg: #f8edc8;
+      --warn-fg: #7a5e0f;
+      --info-bg: #e3ebf5;
+      --info-fg: #1e3a5f;
+      --ok-bg: #dde8d8;
+      --ok-fg: #2d5b2a;
+      --bad: #b8553c;
+      --neutral: #c9a96e;
+      --good: #6a9b6c;
+
+      --font-display: "Fraunces", "Source Han Serif SC", "Songti SC", "STSong", serif;
+      --font-body: "Source Serif 4", "Source Han Serif SC", "Songti SC", "STSong", serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--fg);
+      background: var(--bg);
+      line-height: 1.75;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 0% 0%, rgba(184, 85, 60, 0.035) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 100% 100%, rgba(30, 58, 95, 0.035) 0%, transparent 60%);
+      background-attachment: fixed;
+    }
+
+    /* ── layout ───────────────────────────────────────────── */
+    .doc {
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+      max-width: 1180px;
+      margin: 0 auto;
+      gap: 64px;
+      padding: 72px 56px 120px;
+    }
+
+    aside.rail {
+      position: sticky;
+      top: 56px;
+      align-self: start;
+      max-height: calc(100vh - 88px);
+      overflow-y: auto;
+      padding-right: 12px;
+      animation: rise 0.5s ease 0.05s both;
+    }
+    main { min-width: 0; animation: rise 0.55s ease 0.15s both; }
+
+    /* ── rail ─────────────────────────────────────────────── */
+    .doc-type {
+      font-family: var(--font-sans);
+      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); font-weight: 700;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .doc-type::before { content: ""; width: 18px; height: 1px; background: var(--accent); display: inline-block; }
+
+    .rail h1 {
+      font-family: var(--font-display);
+      font-weight: 500; font-size: 26px; line-height: 1.22;
+      letter-spacing: -0.018em; margin: 0 0 24px;
+      color: var(--fg);
+      font-variation-settings: "SOFT" 50, "WONK" 0;
+    }
+
+    .meta-list {
+      font-family: var(--font-sans);
+      font-size: 14px; color: var(--fg);
+      margin: 0 0 32px; padding: 16px 0;
+      border-top: 1px solid var(--fg); border-bottom: 1px solid var(--rule);
+    }
+    .meta-list dt {
+      text-transform: uppercase; letter-spacing: 0.1em;
+      font-size: 11px; color: var(--subtle); font-weight: 600; margin-top: 10px;
+    }
+    .meta-list dt:first-of-type { margin-top: 0; }
+    .meta-list dd { margin: 2px 0 0; color: var(--fg); font-size: 14px; }
+
+    .status-pill {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 2px;
+      background: var(--warn-bg); color: var(--warn-fg);
+    }
+    .status-pill.reviewing { background: var(--info-bg); color: var(--info-fg); }
+    .status-pill.final     { background: var(--ok-bg);   color: var(--ok-fg); }
+    .status-pill.archived  { background: var(--bg-soft); color: var(--muted); }
+
+    /* inline TODO 标记，用在 h3 / h4 / 表格里就地标注未定项；段落级未定项用 <p class="todo"> */
+    .todo-tag {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 1px 7px; margin-left: 8px;
+      border-radius: 2px; vertical-align: middle;
+      background: var(--warn-bg); color: var(--warn-fg);
+    }
+    .todo-tag.info { background: var(--info-bg); color: var(--info-fg); }
+    .todo-tag.ok   { background: var(--ok-bg);   color: var(--ok-fg); }
+
+    nav.toc { font-family: var(--font-sans); font-size: 14px; }
+    nav.toc .toc-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--subtle); font-weight: 700; margin-bottom: 12px; display: block;
+    }
+    nav.toc ol { list-style: none; padding: 0; margin: 0; }
+    nav.toc > ol { counter-reset: toc1; }
+    nav.toc li {
+      padding: 7px 0 7px 16px;
+      border-left: 2px solid transparent;
+      transition: border-color 0.2s, color 0.15s;
+    }
+    nav.toc li::before {
+      color: var(--subtle); font-family: var(--font-mono);
+      font-size: 11px; margin-right: 10px; letter-spacing: 0.04em;
+    }
+    nav.toc > ol > li { counter-increment: toc1; }
+    nav.toc > ol > li::before { content: counter(toc1, decimal-leading-zero); }
+
+    nav.toc > ol > li > ol { counter-reset: toc2; margin-top: 2px; }
+    nav.toc > ol > li > ol > li {
+      counter-increment: toc2;
+      padding: 4px 0 4px 14px; margin-left: 18px;
+      font-size: 13px;
+    }
+    nav.toc > ol > li > ol > li::before {
+      content: counter(toc1) "." counter(toc2);
+      font-size: 10.5px;
+    }
+
+    nav.toc > ol > li > ol > li > ol { counter-reset: toc3; margin-top: 2px; }
+    nav.toc > ol > li > ol > li > ol > li {
+      counter-increment: toc3;
+      padding: 3px 0 3px 12px; margin-left: 16px;
+      font-size: 12.5px;
+    }
+    nav.toc > ol > li > ol > li > ol > li::before {
+      content: counter(toc1) "." counter(toc2) "." counter(toc3);
+      font-size: 10px;
+    }
+
+    nav.toc li a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+    nav.toc li:hover { border-left-color: var(--ink-soft); }
+    nav.toc li:hover > a { color: var(--fg); }
+    nav.toc li.active { border-left-color: var(--accent); }
+    nav.toc li.active > a { color: var(--fg); font-weight: 600; }
+    nav.toc li.active::before { color: var(--accent); }
+
+    /* ── main typography ──────────────────────────────────── */
+    .lede {
+      font-family: var(--font-display); font-style: italic; font-weight: 400;
+      font-size: 20px; line-height: 1.55; color: var(--muted);
+      max-width: 60ch; margin: 0 0 56px; padding: 0 0 28px;
+      border-bottom: 1px solid var(--rule);
+      font-variation-settings: "SOFT" 100, "WONK" 1;
+    }
+
+    section { margin-bottom: 64px; scroll-margin-top: 32px; }
+    h3[id], h4[id] { scroll-margin-top: 32px; }
+
+    h2 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 32px; line-height: 1.2; letter-spacing: -0.02em;
+      margin: 0 0 24px; color: var(--fg);
+      font-variation-settings: "SOFT" 30, "WONK" 0;
+    }
+    h2 .num {
+      display: block; font-family: var(--font-mono);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.16em;
+      color: var(--accent); margin-bottom: 8px; text-transform: uppercase;
+    }
+    h3 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 19px; line-height: 1.35; margin: 36px 0 12px;
+      color: var(--fg); letter-spacing: -0.005em;
+    }
+    h3::before { content: "§ "; color: var(--accent); font-weight: 400; margin-right: 2px; }
+    h4 {
+      font-family: var(--font-sans); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin: 22px 0 8px;
+    }
+
+    p { margin: 12px 0; max-width: 68ch; }
+    strong { color: var(--fg); font-weight: 600; }
+    em { font-style: italic; color: var(--ink); }
+    a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink-soft); transition: border-color 0.15s, color 0.15s; }
+    a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── code ─────────────────────────────────────────────── */
+    code { font-family: var(--font-mono); background: var(--bg-soft); padding: 1px 6px; border-radius: 2px; font-size: 0.85em; color: var(--ink); }
+    pre {
+      font-family: var(--font-mono); background: var(--bg-soft);
+      padding: 18px 22px; border-radius: 4px; border-left: 3px solid var(--ink);
+      overflow-x: auto; font-size: 14px; line-height: 1.7;
+      margin: 18px 0; color: var(--fg);
+    }
+    pre code { background: transparent; padding: 0; font-size: inherit; }
+    pre.mermaid {
+      background: var(--bg-card); border: 1px solid var(--rule);
+      border-left: 1px solid var(--rule); border-radius: 4px;
+      padding: 28px; text-align: center; margin: 28px 0;
+    }
+
+    /* ── tables ───────────────────────────────────────────── */
+    table {
+      width: 100%; border-collapse: collapse;
+      margin: 20px 0 28px;
+      font-family: var(--font-sans); font-size: 15px;
+      border-top: 2px solid var(--fg); border-bottom: 2px solid var(--fg);
+    }
+    thead tr { border-bottom: 1px solid var(--fg); }
+    th { text-align: left; font-weight: 700; padding: 10px 16px 10px 0; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    td { padding: 12px 16px 12px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: rgba(184, 85, 60, 0.04); }
+
+    ul, ol { padding-left: 22px; max-width: 68ch; }
+    li { margin: 5px 0; }
+    li::marker { color: var(--accent); }
+
+    blockquote { margin: 22px 0; padding: 6px 0 6px 22px; border-left: 3px solid var(--accent); font-style: italic; color: var(--muted); font-family: var(--font-display); font-size: 17px; }
+
+    /* ── callouts & todo ──────────────────────────────────── */
+    .callout { padding: 14px 18px; margin: 18px 0; font-family: var(--font-sans); font-size: 15px; border-radius: 3px; border-left: 3px solid; }
+    .callout::before { font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-right: 10px; }
+    .callout.info { background: var(--info-bg); color: var(--info-fg); border-color: var(--info-fg); }
+    .callout.info::before { content: "Note —"; }
+    .callout.warn { background: var(--warn-bg); color: var(--warn-fg); border-color: var(--warn-fg); }
+    .callout.warn::before { content: "Heads up —"; }
+    .callout.ok   { background: var(--ok-bg); color: var(--ok-fg); border-color: var(--ok-fg); }
+    .callout.ok::before { content: "Decided —"; }
+
+    .todo {
+      background: var(--warn-bg); color: var(--warn-fg);
+      padding: 10px 14px; margin: 14px 0;
+      font-family: var(--font-sans); font-size: 15px;
+      border-radius: 3px; border-left: 3px solid var(--warn-fg);
+    }
+    .todo::before {
+      content: "TODO"; font-weight: 700; letter-spacing: 0.12em; font-size: 11px;
+      margin-right: 12px; padding: 2px 6px;
+      background: var(--warn-fg); color: var(--warn-bg); border-radius: 2px;
+    }
+
+    /* ── cards / kv ───────────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 18px 0; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 18px 0; }
+    .card { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 4px; padding: 16px 18px; transition: border-color 0.2s, transform 0.2s; }
+    .card:hover { border-color: var(--ink-soft); transform: translateY(-1px); }
+    .card h4 { margin-top: 0; }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+
+    .kv {
+      display: grid; grid-template-columns: 110px 1fr; gap: 10px 18px;
+      font-family: var(--font-sans); font-size: 15px;
+      margin: 14px 0 24px; padding: 18px 22px;
+      background: var(--bg-card); border-radius: 4px; border: 1px solid var(--rule);
+    }
+    .kv dt { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; align-self: center; }
+    .kv dd { margin: 0; color: var(--fg); font-weight: 500; }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* COMPONENT · Metric Cards                                */
+    /* 用于：业务目标 / 关键指标。比 bullet list 一眼能看到数字。 */
+    /* ─────────────────────────────────────────────────────── */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 18px 0 28px;
+    }
+    .metric {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 18px 20px 16px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .metric::before {
+      content: "";
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+      opacity: 0.5;
+      transition: opacity 0.2s, width 0.2s;
+    }
+    .metric:hover { transform: translateY(-2px); border-color: var(--ink-soft); }
+    .metric:hover::before { opacity: 1; width: 4px; }
+    .metric-label {
+      font-family: var(--font-sans); font-size: 11px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); font-weight: 700;
+      display: block; margin-bottom: 8px;
+    }
+    .metric-value {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 30px; line-height: 1; color: var(--fg);
+      letter-spacing: -0.02em;
+      font-variation-settings: "SOFT" 0, "WONK" 0;
+    }
+    .metric-unit {
+      font-family: var(--font-mono); font-size: 15px;
+      color: var(--muted); margin-left: 4px; font-weight: 500;
+    }
+    .metric-delta {
+      display: block; margin-top: 6px;
+      font-family: var(--font-sans); font-size: 13px;
+      color: var(--muted);
+    }
+    .metric-delta strong { color: var(--accent); font-weight: 600; }
+    .metric-delta.up    strong { color: var(--good); }
+    .metric-delta.down  strong { color: var(--bad); }
+    .metric-bar {
+      margin-top: 12px; height: 4px;
+      background: var(--bg-soft); border-radius: 2px; overflow: hidden;
+    }
+    .metric-bar-fill {
+      height: 100%; background: var(--ink); border-radius: 2px;
+      transform-origin: left center;
+      animation: bar-grow 1s cubic-bezier(.2,.7,.3,1) 0.3s both;
+    }
+    @keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* COMPONENT · Comparison Grid (方案对比卡)                 */
+    /* 用于：技术选型 / 方案 PK。比简单 4 列表格更有空间感。     */
+    /* ─────────────────────────────────────────────────────── */
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px; margin: 18px 0 28px;
+    }
+    .compare-card {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 18px 20px;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .compare-card:hover { transform: translateY(-1px); }
+    .compare-card.is-pick {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, #fef4ef 0%, var(--bg-card) 100%);
+    }
+    .compare-card.is-pick::after {
+      content: "采用"; position: absolute; top: -10px; right: 16px;
+      background: var(--accent); color: var(--bg-card);
+      font-family: var(--font-sans); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 4px 8px; border-radius: 2px;
+    }
+    .compare-card h4 {
+      color: var(--fg); font-family: var(--font-display); font-weight: 600;
+      font-size: 17px; letter-spacing: -0.005em;
+      text-transform: none; margin: 0 0 4px;
+    }
+    .compare-tag {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--muted); letter-spacing: 0.06em;
+      display: block; margin-bottom: 12px;
+    }
+    .compare-list { list-style: none; padding: 0; margin: 0 0 12px; font-family: var(--font-sans); font-size: 14px; }
+    .compare-list li { padding: 4px 0 4px 18px; position: relative; color: var(--fg); }
+    .compare-list li::before {
+      position: absolute; left: 0; top: 4px;
+      font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    }
+    .compare-list.pros li::before { content: "+"; color: var(--good); }
+    .compare-list.cons li::before { content: "−"; color: var(--bad); }
+    .compare-score {
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px dashed var(--rule);
+      font-family: var(--font-sans); font-size: 13px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .compare-score div { display: flex; justify-content: space-between; color: var(--muted); }
+    .compare-score .dots { letter-spacing: 2px; color: var(--accent); }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* COMPONENT · Diagram frame (SVG 包装)                    */
+    /* ─────────────────────────────────────────────────────── */
+    .diagram {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 28px 24px 24px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .diagram::before {
+      content: attr(data-label);
+      position: absolute; top: 12px; left: 16px;
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--subtle); font-weight: 600;
+    }
+    .diagram svg { display: block; width: 100%; height: auto; max-height: 520px; }
+    .diagram-legend {
+      font-family: var(--font-sans); font-size: 12px;
+      color: var(--muted); margin-top: 14px;
+      padding-top: 12px; border-top: 1px dashed var(--rule);
+      display: flex; flex-wrap: wrap; gap: 16px;
+    }
+    .diagram-legend span { display: flex; align-items: center; gap: 6px; }
+    .diagram-legend .swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+
+    /* ── SVG: layered architecture ────────────────────────── */
+    .layer-rect { fill: var(--bg-soft); stroke: var(--rule); stroke-width: 1; transition: fill 0.25s, stroke 0.25s; }
+    .layer-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; fill: var(--muted); font-weight: 600; }
+    .node-rect { fill: var(--bg-card); stroke: var(--ink-soft); stroke-width: 1; transition: fill 0.2s, stroke 0.2s; cursor: pointer; }
+    .node-label { font-family: var(--font-sans); font-size: 12px; fill: var(--fg); pointer-events: none; font-weight: 500; transition: fill 0.2s; }
+    .node-sub { font-family: var(--font-mono); font-size: 9px; fill: var(--subtle); pointer-events: none; }
+    .node-group { transition: opacity 0.25s; }
+    .node-group:hover .node-rect { fill: var(--ink); stroke: var(--ink); }
+    .node-group:hover .node-label { fill: var(--bg-card); }
+    .node-group:hover .node-sub { fill: rgba(255,255,255,0.6); }
+    .layer-group { transition: opacity 0.3s; cursor: default; }
+    .arch-diagram[data-hover] .layer-group { opacity: 0.35; }
+    .arch-diagram[data-hover] .layer-group.is-hover { opacity: 1; }
+    .arch-diagram[data-hover] .layer-group.is-hover .layer-rect { fill: rgba(184, 85, 60, 0.06); stroke: var(--accent); }
+    .arch-diagram[data-hover] .layer-group.is-hover .layer-label { fill: var(--accent); }
+    .link-line { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; stroke-dasharray: 3 4; animation: dash 1.4s linear infinite; opacity: 0.55; }
+    @keyframes dash { to { stroke-dashoffset: -14; } }
+    .layer-group { animation: layer-rise 0.55s ease both; }
+    .layer-group:nth-of-type(1) { animation-delay: 0.10s; }
+    .layer-group:nth-of-type(2) { animation-delay: 0.20s; }
+    .layer-group:nth-of-type(3) { animation-delay: 0.30s; }
+    .layer-group:nth-of-type(4) { animation-delay: 0.40s; }
+    @keyframes layer-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── SVG: flow diagram ────────────────────────────────── */
+    .flow-node { transition: filter 0.2s; cursor: pointer; }
+    .flow-node .flow-shape { fill: var(--bg-card); stroke: var(--ink); stroke-width: 1.2; transition: fill 0.2s, stroke 0.2s; }
+    .flow-node.start .flow-shape, .flow-node.end .flow-shape { fill: var(--ink); }
+    .flow-node.start .flow-text, .flow-node.end .flow-text { fill: var(--bg-card); }
+    .flow-node.decision .flow-shape { fill: #fef4e8; stroke: var(--accent); }
+    .flow-node:hover .flow-shape { fill: var(--accent); stroke: var(--accent); }
+    .flow-node:hover .flow-text { fill: var(--bg-card); }
+    .flow-text { font-family: var(--font-sans); font-size: 12px; fill: var(--fg); font-weight: 500; pointer-events: none; transition: fill 0.2s; }
+    .flow-arrow { stroke: var(--ink-soft); stroke-width: 1.4; fill: none; marker-end: url(#arrow); stroke-dasharray: 5 4; animation: dash-flow 1.6s linear infinite; }
+    @keyframes dash-flow { to { stroke-dashoffset: -18; } }
+    .flow-arrow-label { font-family: var(--font-mono); font-size: 10px; fill: var(--muted); pointer-events: none; }
+    .flow-node { animation: flow-pop 0.5s ease both; }
+    .flow-node:nth-of-type(1) { animation-delay: 0.05s; }
+    .flow-node:nth-of-type(2) { animation-delay: 0.15s; }
+    .flow-node:nth-of-type(3) { animation-delay: 0.25s; }
+    .flow-node:nth-of-type(4) { animation-delay: 0.35s; }
+    .flow-node:nth-of-type(5) { animation-delay: 0.45s; }
+    .flow-node:nth-of-type(6) { animation-delay: 0.55s; }
+    .flow-node:nth-of-type(7) { animation-delay: 0.65s; }
+    @keyframes flow-pop { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* COMPONENT · Story Walkthrough · 步骤×界面×后端 三联动    */
+    /* 用于：核心交互流程。比纯流程图直观一个量级——评审能       */
+    /* 在每一步看到「用户看到什么界面 + 后端发生什么」。         */
+    /* ─────────────────────────────────────────────────────── */
+    .story {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      margin: 24px 0;
+      overflow: hidden;
+      font-family: var(--font-sans);
+    }
+    .story-head {
+      padding: 18px 24px 16px;
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+    }
+    .story-head-title {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--subtle); font-weight: 600;
+    }
+    .story-counter {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--muted); letter-spacing: 0.06em;
+    }
+    .story-counter strong { color: var(--accent); font-weight: 600; }
+
+    .story-progress {
+      display: flex; gap: 4px;
+      padding: 14px 24px;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--rule);
+    }
+    .story-step {
+      flex: 1; min-width: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: var(--muted);
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .story-step:hover { border-color: var(--ink-soft); color: var(--fg); }
+    .story-step.is-active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg-card);
+    }
+    .story-step.is-done { border-color: var(--ink-soft); color: var(--fg); }
+    .story-step.is-done::before {
+      content: ""; position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px; background: var(--ink);
+    }
+    .story-step-num {
+      display: block;
+      font-family: var(--font-mono); font-size: 11px;
+      font-weight: 600; letter-spacing: 0.04em;
+      opacity: 0.7;
+    }
+    .story-step-label {
+      display: block;
+      font-size: 13px; font-weight: 600;
+      margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .story-stage {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      padding: 28px 24px;
+    }
+
+    /* ── phone mockup ───────────── */
+    .story-mockup {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .phone {
+      width: 240px; height: 480px;
+      display: block;
+    }
+    .phone-body { fill: #2a2520; }
+    .phone-screen { fill: var(--bg); }
+    .phone-notch { fill: #1a1612; }
+    .phone-bar { fill: var(--subtle); }
+    .ui-card { fill: var(--bg-card); stroke: var(--rule); stroke-width: 0.8; }
+    .ui-text { font-family: var(--font-sans); fill: var(--fg); }
+    .ui-text-muted { font-family: var(--font-sans); fill: var(--muted); }
+    .ui-text-accent { font-family: var(--font-sans); fill: var(--accent); font-weight: 600; }
+    .ui-btn { fill: var(--ink); }
+    .ui-btn-accent { fill: var(--accent); }
+    .ui-btn-text { font-family: var(--font-sans); fill: var(--bg-card); font-weight: 600; text-anchor: middle; }
+    .ui-check { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+    .ui-check-on { fill: var(--accent); stroke: var(--accent); }
+    .ui-divider { stroke: var(--rule); stroke-width: 0.6; }
+    .ui-pill { fill: var(--warn-bg); }
+    .ui-pill-text { font-family: var(--font-sans); fill: var(--warn-fg); font-size: 8px; font-weight: 600; }
+    .ui-success { fill: var(--good); }
+    .story-screen {
+      transition: opacity 0.3s;
+    }
+    .story-screen[hidden] { display: none; }
+
+    /* ── meta card ──────────────── */
+    .story-meta { min-width: 0; }
+    .story-card {
+      display: none;
+      animation: card-in 0.35s ease;
+    }
+    .story-card.is-active { display: block; }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .story-card h4 {
+      font-family: var(--font-sans);
+      font-size: 18px; font-weight: 600;
+      letter-spacing: -0.005em;
+      color: var(--fg);
+      margin: 0 0 4px;
+      text-transform: none;
+    }
+    .story-card-sub {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--accent); letter-spacing: 0.06em;
+      display: block; margin-bottom: 16px;
+    }
+    .story-meta-row {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 10px 16px;
+      padding: 10px 0;
+      border-top: 1px dashed var(--rule);
+      font-size: 14px;
+      align-items: start;
+    }
+    .story-meta-row:first-of-type { border-top: none; padding-top: 0; }
+    .story-meta-row dt {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--muted); letter-spacing: 0.08em;
+      text-transform: uppercase; font-weight: 700;
+      padding-top: 2px;
+    }
+    .story-meta-row dd { margin: 0; color: var(--fg); }
+    .story-meta-row dd code {
+      background: var(--bg-soft); font-size: 13px;
+      padding: 1px 6px; border-radius: 2px;
+    }
+    .story-meta-row dd ul {
+      margin: 0; padding-left: 18px; list-style: none;
+    }
+    .story-meta-row dd ul li {
+      padding: 2px 0 2px 12px; position: relative;
+    }
+    .story-meta-row dd ul li::before {
+      content: "·"; position: absolute; left: 0; color: var(--accent); font-weight: 700;
+    }
+
+    /* ── bottom mini-flow ───────── */
+    .story-flow {
+      padding: 16px 24px;
+      background: var(--bg-soft);
+      border-top: 1px solid var(--rule);
+    }
+    .story-flow-svg { width: 100%; height: 48px; display: block; }
+    .flow-dot { fill: var(--bg-card); stroke: var(--ink-soft); stroke-width: 1.2; transition: all 0.3s; cursor: pointer; }
+    .flow-dot.is-done { fill: var(--ink); stroke: var(--ink); }
+    .flow-dot.is-active { fill: var(--accent); stroke: var(--accent); r: 9; }
+    .flow-line { stroke: var(--ink-soft); stroke-width: 1.2; opacity: 0.4; }
+    .flow-line.is-done { opacity: 1; }
+    .flow-cap {
+      font-family: var(--font-mono); font-size: 9px;
+      fill: var(--muted); text-anchor: middle;
+      transition: fill 0.3s;
+    }
+    .flow-cap.is-active { fill: var(--accent); font-weight: 700; }
+
+    /* ── nav ────────────────────── */
+    .story-nav {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 24px;
+      border-top: 1px solid var(--rule);
+      background: var(--bg-card);
+    }
+    .story-nav-btn {
+      background: var(--bg-card); border: 1px solid var(--rule);
+      border-radius: 4px; padding: 6px 14px;
+      cursor: pointer; font: inherit; font-size: 13px;
+      color: var(--fg); font-weight: 500;
+      transition: all 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .story-nav-btn:hover:not(:disabled) {
+      border-color: var(--ink-soft); background: var(--bg-soft);
+    }
+    .story-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    @media (max-width: 900px) {
+      .story-stage { grid-template-columns: 1fr; gap: 20px; padding: 20px 16px; }
+      .story-mockup { padding: 0; }
+      .story-progress { overflow-x: auto; }
+      .story-step { min-width: 90px; flex: 0 0 auto; }
+    }
+
+    /* ── Browser Mockup + demo-ui controls ──────────────────────── */
+    /* B 端 / 后台系统方案演示 PC 界面用。手机 mockup 见 .story-mockup */
+    .browser-mockup {
+      background: var(--bg-card); border: 1px solid var(--rule);
+      border-radius: 6px; overflow: hidden; margin: 20px 0;
+      font-family: var(--font-sans); font-size: 13px; color: var(--fg);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+    .browser-mockup .bm-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; background: var(--bg-soft);
+      border-bottom: 1px solid var(--rule);
+    }
+    .browser-mockup .bm-bar::before {
+      content: ""; display: inline-block;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #d9d2c2; box-shadow: 16px 0 0 #d9d2c2, 32px 0 0 #d9d2c2;
+      margin-right: 28px;
+    }
+    .browser-mockup .bm-title {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--muted); letter-spacing: 0.04em;
+      flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .browser-mockup .bm-body { padding: 16px 18px; background: var(--bg-card); }
+
+    /* tabs 横向切换 */
+    .demo-ui-tabs {
+      display: flex; gap: 0; border-bottom: 1px solid var(--rule);
+      margin: 0 0 14px;
+    }
+    .demo-ui-tab {
+      padding: 8px 14px; font-size: 13px; color: var(--muted);
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .demo-ui-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+    /* row · 表格行（含 label / value / 操作列） */
+    .demo-ui-row {
+      display: flex; gap: 12px; align-items: center;
+      padding: 8px 0; font-size: 13px;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .demo-ui-row:last-child { border-bottom: none; }
+    .demo-ui-row .col { flex: 1; }
+    .demo-ui-row .col-muted { color: var(--muted); }
+    .demo-ui-row .col-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+    /* field · 表单字段 */
+    .demo-ui-field {
+      display: flex; flex-direction: column; gap: 4px;
+      margin: 10px 0; font-size: 13px;
+    }
+    .demo-ui-field-label { color: var(--muted); font-size: 12px; letter-spacing: 0.04em; }
+    .demo-ui-field-input {
+      padding: 6px 10px; border: 1px solid var(--rule); border-radius: 3px;
+      background: var(--bg-card); color: var(--fg);
+    }
+
+    /* btn · 按钮 · 主 / 次 */
+    .demo-ui-btn {
+      display: inline-block;
+      padding: 5px 14px; font-size: 12px; font-weight: 500;
+      border: 1px solid var(--rule); border-radius: 3px;
+      background: var(--bg-card); color: var(--fg);
+      font-family: var(--font-sans); cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .demo-ui-btn.is-primary { background: var(--accent); color: var(--bg-card); border-color: var(--accent); }
+    .demo-ui-btn.is-danger  { color: var(--bad); border-color: var(--bad); }
+
+    /* tag · inline 状态标签（与 todo-tag 区分：tag 表示业务状态，todo-tag 表示未定项） */
+    .demo-ui-tag {
+      display: inline-block; padding: 1px 7px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+      border-radius: 2px; background: var(--bg-soft); color: var(--muted);
+      vertical-align: middle;
+    }
+    .demo-ui-tag.ok    { background: var(--ok-bg);   color: var(--ok-fg); }
+    .demo-ui-tag.warn  { background: var(--warn-bg); color: var(--warn-fg); }
+    .demo-ui-tag.info  { background: var(--info-bg); color: var(--info-fg); }
+
+    /* progress · 步骤进度条 */
+    .demo-ui-progress {
+      display: flex; gap: 4px; margin: 6px 0 14px;
+    }
+    .demo-ui-progress > span {
+      flex: 1; height: 4px; background: var(--bg-soft); border-radius: 2px;
+    }
+    .demo-ui-progress > span.is-done   { background: var(--accent); }
+    .demo-ui-progress > span.is-active { background: var(--accent); opacity: 0.5; }
+
+    /* ── flow-master: 联动 Story 时当前节点高亮 ──────────── */
+    .flow-master .flow-node[data-step] { cursor: pointer; }
+    .flow-master .flow-node.is-current .flow-shape {
+      fill: var(--accent);
+      stroke: var(--accent);
+      filter: drop-shadow(0 2px 8px rgba(184, 85, 60, 0.3));
+    }
+    .flow-master .flow-node.is-current .flow-text { fill: var(--bg-card); }
+    .flow-master .flow-node.is-current { animation: pulse 0.4s ease; }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── SVG: state machine ───────────────────────────────── */
+    .state-node { cursor: pointer; }
+    .state-circle { fill: var(--bg-card); stroke: var(--ink); stroke-width: 1.4; transition: fill 0.2s, stroke 0.2s; }
+    .state-node.terminal .state-circle { fill: var(--ink); }
+    .state-node.terminal .state-text   { fill: var(--bg-card); }
+    .state-node:hover .state-circle    { fill: var(--accent); stroke: var(--accent); }
+    .state-node:hover .state-text      { fill: var(--bg-card); }
+    .state-text { font-family: var(--font-sans); font-size: 12px; font-weight: 500; fill: var(--fg); text-anchor: middle; dominant-baseline: middle; pointer-events: none; transition: fill 0.2s; }
+    .state-trans { stroke: var(--ink-soft); stroke-width: 1.3; fill: none; marker-end: url(#arrow-state); transition: stroke 0.2s; }
+    .state-trans-label { font-family: var(--font-mono); font-size: 10px; fill: var(--muted); pointer-events: none; }
+    .state-node { animation: state-pop 0.4s ease both; }
+    .state-node:nth-of-type(1) { animation-delay: 0.05s; }
+    .state-node:nth-of-type(2) { animation-delay: 0.15s; }
+    .state-node:nth-of-type(3) { animation-delay: 0.25s; }
+    .state-node:nth-of-type(4) { animation-delay: 0.35s; }
+    .state-node:nth-of-type(5) { animation-delay: 0.45s; }
+    @keyframes state-pop { from { opacity: 0; transform: scale(0.85); transform-origin: center; } to { opacity: 1; transform: scale(1); } }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* COMPONENT · Risk Matrix 2×2 (SVG)                       */
+    /* dot 按真实 data-x / data-y (0-1) 坐标定位，JS 自动算       */
+    /* cx/cy + 碰撞避让；渐变警戒区从左下绿到右上红。            */
+    /* ─────────────────────────────────────────────────────── */
+    .risk-matrix-svg {
+      width: 100%; height: auto;
+      max-height: 420px;
+      display: block;
+      margin: 8px 0;
+    }
+    .risk-axis { stroke: var(--fg); stroke-width: 1.5; fill: none; }
+    .risk-gridline { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 3; }
+    .risk-axis-label {
+      font-family: var(--font-sans); font-size: 12px;
+      fill: var(--muted); font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .risk-axis-tick {
+      font-family: var(--font-mono); font-size: 11px;
+      fill: var(--subtle);
+    }
+    .risk-dot {
+      cursor: pointer;
+      transition: transform 0.2s;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+    .risk-dot:hover { transform: scale(1.2); }
+    .risk-dot circle {
+      stroke: var(--bg-card); stroke-width: 2;
+      fill: var(--ink);
+      transition: fill 0.2s;
+    }
+    .risk-dot text {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+      fill: var(--bg-card);
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+    .risk-dot[data-sev="high"]   circle { fill: var(--bad); }
+    .risk-dot[data-sev="medium"] circle { fill: var(--neutral); }
+    .risk-dot[data-sev="low"]    circle { fill: var(--good); }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* COMPONENT · Timeline (里程碑甘特)                        */
+    /* 用于：6.2 里程碑。比表格直观，能看到时间重叠 / 依赖。     */
+    /* ─────────────────────────────────────────────────────── */
+    .timeline {
+      position: relative;             /* today 线 absolute 锚点 */
+      margin: 24px 0;
+      font-family: var(--font-sans);
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 24px 28px 28px;
+    }
+    .timeline-axis {
+      display: grid;
+      grid-template-columns: repeat(var(--cols, 4), 1fr);
+      padding-left: 136px;   /* 120 任务名列 + 16 gap，对齐 track */
+      font-size: 12px; color: var(--muted);
+      letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 6px; margin-bottom: 16px;
+    }
+    .timeline-axis span { text-align: center; }
+    .timeline-rows {
+      display: flex; flex-direction: column; gap: 10px;
+      position: relative;
+    }
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      align-items: center;
+      gap: 16px;
+      font-size: 15px;
+    }
+    .timeline-task { color: var(--fg); font-weight: 500; }
+    .timeline-track {
+      height: 30px;
+      width: 100%;
+      display: block;
+      background: var(--bg-soft);
+      border-radius: 3px;
+      overflow: visible;
+    }
+    .timeline-bar {
+      fill: var(--ink);
+      transition: fill 0.2s;
+      cursor: pointer;
+      transform-origin: left center;
+      transform-box: fill-box;
+      animation: bar-slide 0.6s cubic-bezier(.2, .7, .3, 1) both;
+    }
+    .timeline-bar:hover { fill: var(--accent); }
+    .timeline-bar.is-review    { fill: var(--ink-soft); }
+    .timeline-bar.is-test      { fill: var(--neutral); }
+    .timeline-bar.is-milestone { fill: var(--accent); }
+    .timeline-bar.is-launch    { fill: var(--good); }
+    .timeline-bar-progress {
+      fill: rgba(255, 255, 255, 0.28);
+      pointer-events: none;
+    }
+    .timeline-bar-text {
+      font-family: var(--font-mono); font-size: 12px;
+      fill: var(--bg-card);
+      pointer-events: none;
+      dominant-baseline: middle;
+    }
+    .timeline-milestone {
+      fill: var(--accent);
+      stroke: var(--bg-card); stroke-width: 1.5;
+      cursor: pointer;
+      transition: fill 0.2s;
+    }
+    .timeline-milestone:hover { fill: var(--ink); }
+
+    /* today 线：跨所有 track 行的 absolute overlay */
+    .timeline-today {
+      position: absolute;
+      top: 50px; bottom: 12px;
+      left: calc(28px + 120px + 16px);   /* timeline padding + 任务名列 + gap */
+      right: 28px;                        /* timeline padding-right */
+      pointer-events: none;
+    }
+    .timeline-today::before {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      left: var(--today, 60%);
+      border-left: 2px dashed var(--accent);
+    }
+    .timeline-today span {
+      position: absolute;
+      top: -14px;
+      left: var(--today, 60%);
+      transform: translateX(-50%);
+      background: var(--bg-card);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      padding: 1px 8px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      white-space: nowrap;
+    }
+    @keyframes bar-slide { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* COMPONENT · Details / Folding                           */
+    /* 用于：长字段定义 / 错误码 / 完整代码。折叠避免压垮主线。   */
+    /* ─────────────────────────────────────────────────────── */
+    details.fold {
+      border: 1px solid var(--rule); border-radius: 4px;
+      background: var(--bg-card); margin: 14px 0;
+      transition: border-color 0.2s;
+    }
+    details.fold[open] { border-color: var(--ink-soft); }
+    details.fold > summary {
+      cursor: pointer; list-style: none;
+      padding: 12px 16px;
+      font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+      color: var(--fg);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+    }
+    details.fold > summary::-webkit-details-marker { display: none; }
+    details.fold > summary::after {
+      content: "▸"; color: var(--accent); font-size: 11px;
+      transition: transform 0.2s;
+    }
+    details.fold[open] > summary::after { transform: rotate(90deg); }
+    details.fold > summary .count {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--subtle); font-weight: 400; margin-left: auto;
+    }
+    details.fold > .fold-body {
+      padding: 0 16px 16px;
+      border-top: 1px dashed var(--rule);
+      animation: fold-open 0.25s ease both;
+    }
+    @keyframes fold-open { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ── tooltip ──────────────────────────────────────────── */
+    #node-tooltip {
+      position: fixed; pointer-events: none; z-index: 1000;
+      background: var(--fg); color: var(--bg);
+      padding: 8px 12px; border-radius: 4px;
+      font-family: var(--font-sans); font-size: 13px;
+      max-width: 240px; line-height: 1.5;
+      box-shadow: 0 8px 24px rgba(28, 26, 23, 0.15);
+      opacity: 0; transition: opacity 0.15s;
+    }
+    #node-tooltip.show { opacity: 1; }
+    #node-tooltip::before {
+      content: attr(data-kind);
+      display: block; font-family: var(--font-mono);
+      font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 2px;
+    }
+
+    /* ── decorative ───────────────────────────────────────── */
+    .ornament { text-align: center; color: var(--subtle); margin: 64px 0; font-family: var(--font-display); font-size: 20px; letter-spacing: 1.2em; padding-left: 1.2em; }
+    footer.doc-foot { grid-column: 1 / -1; margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--rule); font-family: var(--font-sans); font-size: 13px; color: var(--subtle); display: flex; justify-content: space-between; letter-spacing: 0.06em; }
+
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── print ────────────────────────────────────────────── */
+    @media print {
+      body { background: white; background-image: none; }
+      .doc { grid-template-columns: 1fr; padding: 0; gap: 0; max-width: none; }
+      aside.rail { position: static; max-height: none; overflow: visible; padding: 0; }
+      nav.toc { page-break-after: always; }
+      h2, h3, h4 { page-break-after: avoid; }
+      pre, table, .card, .diagram, .timeline, .compare-card, .metric { page-break-inside: avoid; }
+      a { color: var(--fg); border-bottom: none; }
+      .doc > *, .layer-group, .flow-node, .state-node, .metric-bar-fill, .timeline-bar { animation: none; transform: none; }
+      .link-line, .flow-arrow { animation: none; stroke-dasharray: none; }
+    }
+
+    /* ── mobile ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .doc { grid-template-columns: 1fr; gap: 32px; padding: 32px 22px 80px; }
+      aside.rail { position: static; max-height: none; overflow: visible; padding-right: 0; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .kv { grid-template-columns: 1fr; gap: 2px; padding: 14px 16px; }
+      .kv dt { margin-top: 8px; }
+      .kv dt:first-of-type { margin-top: 0; }
+      h2 { font-size: 26px; }
+      h2 .num { font-size: 11px; }
+      .lede { font-size: 17px; }
+      .diagram { padding: 24px 12px 16px; }
+      .timeline-row { grid-template-columns: 1fr; gap: 6px; }
+      .risk-matrix { grid-template-columns: 40px repeat(3, 1fr); grid-template-rows: repeat(3, 72px) 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="doc">
+
+    <aside class="rail">
+      <div class="doc-type">Tech Spec</div>
+      <h1>需求标题</h1>
+
+      <dl class="meta-list">
+        <dt>作者</dt><dd id="meta-author">—</dd>
+        <dt>日期</dt><dd id="meta-date">—</dd>
+        <dt>状态</dt><dd><span class="status-pill" id="meta-status">draft</span></dd>
+      </dl>
+
+      <nav class="toc">
+        <span class="toc-label">目录</span>
+        <!--
+          目录支持三级。嵌套用 <ol> 套 <ol>：
+          - 一级编号：01 / 02 / 03 …（decimal-leading-zero）
+          - 二级编号：2.1 / 2.2 …
+          - 三级编号：3.7.1 / 3.7.2 …
+          每一级 li 的 href 对应到正文里的 section[id] / h3[id] / h4[id]，
+          滚动到对应区块时，对应层级的 li 会自动高亮。
+
+          ⚠️ 嵌套 <ol> 必须放在 <a> 闭合之后，不要写成 <a>...<ol>...</ol></a>，
+          因为 HTML 规范不允许 <a> 内嵌 <ol> 这种块级元素，浏览器会自行修复成
+          奇怪的结构，导致 TOC 编号 / 高亮失效。正确写法见下方示例。
+        -->
+        <ol>
+          <li><a href="#bg">背景</a></li>
+          <li><a href="#goal">目标</a>
+            <ol>
+              <li><a href="#goal-biz">业务目标</a></li>
+              <li><a href="#goal-tech">技术目标</a></li>
+            </ol>
+          </li>
+          <li><a href="#solution">技术方案</a>
+            <ol>
+              <li><a href="#sol-pick">技术选型</a></li>
+              <li><a href="#sol-arch">系统分层</a></li>
+              <li><a href="#sol-flow">关键流程</a></li>
+              <li><a href="#sol-state">状态机</a></li>
+              <li><a href="#sol-seq">数据流时序</a></li>
+              <li><a href="#sol-modules">模块拆分</a></li>
+              <li><a href="#sol-detail">详细设计</a>
+                <ol>
+                  <li><a href="#sol-detail-schema">数据结构</a></li>
+                  <li><a href="#sol-detail-api">接口签名</a></li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li><a href="#open-questions">待确认事项</a></li>
+          <li><a href="#risk">技术风险分析</a></li>
+          <li><a href="#scope">影响范围</a></li>
+          <li><a href="#plan">产研计划</a>
+            <ol>
+              <li><a href="#plan-people">相关人员</a></li>
+              <li><a href="#plan-milestone">里程碑</a></li>
+            </ol>
+          </li>
+        </ol>
+      </nav>
+    </aside>
+
+    <main>
+      <p class="lede">一句话点明这份方案要解决的核心问题，以及为什么是现在做。让人扫一眼就知道值不值得继续读。</p>
+
+      <section id="bg">
+        <h2><span class="num">01 · Background</span>背景</h2>
+        <p>当前现状是什么、痛在哪里、有什么可量化的依据。一两段，不超过 6 行。</p>
+        <p>避免笼统地写&ldquo;提升体验&rdquo;，要给出具体场景与证据。比如：当前部分退款只能由客服走 OA 手工操作，平均处理时长 <strong>3.2 小时</strong>，每月约 <strong>1800 单</strong>，占客服工时 8%。</p>
+      </section>
+
+      <section id="goal">
+        <h2><span class="num">02 · Goals</span>目标</h2>
+
+        <h3 id="goal-biz">2.1 业务目标</h3>
+        <!-- ▼ COMPONENT: Metric Cards · 业务目标用大数字 + 基线 + 进度比 list 直观得多 -->
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-label">处理时长</span>
+            <span class="metric-value">3.2<span class="metric-unit">h</span></span>
+            <span class="metric-delta down"><strong>→ 15 min</strong> 目标</span>
+            <div class="metric-bar"><div class="metric-bar-fill" style="width: 8%; background: var(--good)"></div></div>
+          </div>
+          <div class="metric">
+            <span class="metric-label">月均工单</span>
+            <span class="metric-value">1.8<span class="metric-unit">k</span></span>
+            <span class="metric-delta"><strong>−60%</strong> 客服人工</span>
+            <div class="metric-bar"><div class="metric-bar-fill" style="width: 40%"></div></div>
+          </div>
+          <div class="metric">
+            <span class="metric-label">退款准确率</span>
+            <span class="metric-value">99.9<span class="metric-unit">%</span></span>
+            <span class="metric-delta up"><strong>+0.4%</strong> vs 当前</span>
+            <div class="metric-bar"><div class="metric-bar-fill" style="width: 99%"></div></div>
+          </div>
+          <div class="metric">
+            <span class="metric-label">下游改造</span>
+            <span class="metric-value">0<span class="metric-unit">系统</span></span>
+            <span class="metric-delta up"><strong>对账兼容</strong></span>
+            <div class="metric-bar"><div class="metric-bar-fill" style="width: 100%; background: var(--good)"></div></div>
+          </div>
+        </div>
+
+        <h3 id="goal-tech">2.2 技术目标</h3>
+        <ul>
+          <li>架构 / 可维护性 / 可观测性 / 可扩展性等工程目标</li>
+        </ul>
+      </section>
+
+      <section id="solution">
+        <h2><span class="num">03 · Solution</span>技术方案</h2>
+
+        <h3 id="sol-pick">3.1 技术选型</h3>
+        <!-- ▼ COMPONENT: Comparison Grid · 方案 PK，推荐的卡片加 is-pick 角标 -->
+        <div class="compare">
+          <div class="compare-card is-pick">
+            <h4>方案 A · 父子退款单</h4>
+            <span class="compare-tag">Refund Svc 内部拆单</span>
+            <ul class="compare-list pros">
+              <li>下游对账零改造</li>
+              <li>状态机复用，工程量小</li>
+            </ul>
+            <ul class="compare-list cons">
+              <li>多笔串行调用，耗时 N×</li>
+            </ul>
+            <div class="compare-score">
+              <div><span>开发成本</span><span class="dots">●●○</span></div>
+              <div><span>风险</span><span class="dots">●○○</span></div>
+              <div><span>性能</span><span class="dots">●●○</span></div>
+            </div>
+          </div>
+          <div class="compare-card">
+            <h4>方案 B · 改造接口</h4>
+            <span class="compare-tag">支付侧新增字段</span>
+            <ul class="compare-list pros">
+              <li>一次调用，性能好</li>
+            </ul>
+            <ul class="compare-list cons">
+              <li>下游对账需联动改造</li>
+              <li>跨团队对齐成本高</li>
+            </ul>
+            <div class="compare-score">
+              <div><span>开发成本</span><span class="dots">●●●</span></div>
+              <div><span>风险</span><span class="dots">●●●</span></div>
+              <div><span>性能</span><span class="dots">●●●</span></div>
+            </div>
+          </div>
+          <div class="compare-card">
+            <h4>方案 C · 客服系统改造</h4>
+            <span class="compare-tag">在现有 OA 加自动化</span>
+            <ul class="compare-list pros">
+              <li>不动核心交易链路</li>
+            </ul>
+            <ul class="compare-list cons">
+              <li>仍依赖人工触发</li>
+              <li>无法解决用户自助诉求</li>
+            </ul>
+            <div class="compare-score">
+              <div><span>开发成本</span><span class="dots">●○○</span></div>
+              <div><span>风险</span><span class="dots">●○○</span></div>
+              <div><span>性能</span><span class="dots">○○○</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!--
+          ⬇⬇⬇ 系统全景必备组合（推荐做"技术方案"的开篇）⬇⬇⬇
+          一份方案打开就让读者建立空间感的关键 = 分层架构 + 主流程。
+          顺序上，系统分层 + 关键流程 应紧跟在「3.1 技术选型」（或省略后直接开头）之后，
+          作为 3.x「系统全景」概念组合呈现，再展开 状态机 / 数据流 / 模块拆分 / 详细设计。
+        -->
+        <h3 id="sol-arch">3.2 系统分层</h3>
+        <p>纵向 4 层，每层只与相邻层通信。悬停可聚焦单层 / 单节点。</p>
+        <!-- ▼ COMPONENT: Architecture SVG · 分层架构图，hover 单层高亮 + 节点 tooltip -->
+        <div class="diagram" data-label="Architecture · 分层架构">
+          <svg class="arch-diagram" viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow-arch" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,8 L7,4 z" fill="#4a5d7e"/>
+              </marker>
+            </defs>
+            <line class="link-line" x1="380" y1="78"  x2="380" y2="102" marker-end="url(#arrow-arch)"/>
+            <line class="link-line" x1="380" y1="158" x2="380" y2="182" marker-end="url(#arrow-arch)"/>
+            <line class="link-line" x1="380" y1="238" x2="380" y2="262" marker-end="url(#arrow-arch)"/>
+
+            <g class="layer-group" data-layer="client">
+              <rect class="layer-rect" x="30" y="22" width="700" height="60" rx="6"/>
+              <text class="layer-label" x="44" y="44">L1 · Clients</text>
+              <g class="node-group" data-detail="浏览器端，跑 React 应用，调用 BFF GraphQL"><rect class="node-rect" x="160" y="34" width="120" height="36" rx="4"/><text class="node-label" x="220" y="55" text-anchor="middle">Web</text><text class="node-sub" x="220" y="68" text-anchor="middle">React · Next.js</text></g>
+              <g class="node-group" data-detail="iOS 原生应用，走统一 BFF"><rect class="node-rect" x="320" y="34" width="120" height="36" rx="4"/><text class="node-label" x="380" y="55" text-anchor="middle">iOS</text><text class="node-sub" x="380" y="68" text-anchor="middle">Swift</text></g>
+              <g class="node-group" data-detail="Android 原生应用"><rect class="node-rect" x="480" y="34" width="120" height="36" rx="4"/><text class="node-label" x="540" y="55" text-anchor="middle">Android</text><text class="node-sub" x="540" y="68" text-anchor="middle">Kotlin</text></g>
+            </g>
+
+            <g class="layer-group" data-layer="gateway">
+              <rect class="layer-rect" x="30" y="102" width="700" height="60" rx="6"/>
+              <text class="layer-label" x="44" y="124">L2 · Gateway</text>
+              <g class="node-group" data-detail="BFF 聚合层：鉴权、限流、字段编排、缓存"><rect class="node-rect" x="200" y="114" width="360" height="36" rx="4"/><text class="node-label" x="380" y="135" text-anchor="middle">BFF · GraphQL Gateway</text><text class="node-sub" x="380" y="148" text-anchor="middle">auth · rate limit · field-level cache</text></g>
+            </g>
+
+            <g class="layer-group" data-layer="service">
+              <rect class="layer-rect" x="30" y="182" width="700" height="60" rx="6"/>
+              <text class="layer-label" x="44" y="204">L3 · Services</text>
+              <g class="node-group" data-detail="订单领域：创建、状态机、查询"><rect class="node-rect" x="110" y="194" width="120" height="36" rx="4"/><text class="node-label" x="170" y="215" text-anchor="middle">Order</text><text class="node-sub" x="170" y="228" text-anchor="middle">Java · Spring</text></g>
+              <g class="node-group" data-detail="支付与退款编排"><rect class="node-rect" x="245" y="194" width="120" height="36" rx="4"/><text class="node-label" x="305" y="215" text-anchor="middle">Payment</text><text class="node-sub" x="305" y="228" text-anchor="middle">Java</text></g>
+              <g class="node-group" data-detail="退款单生成 + 审批驱动"><rect class="node-rect" x="380" y="194" width="120" height="36" rx="4"/><text class="node-label" x="440" y="215" text-anchor="middle">Refund</text><text class="node-sub" x="440" y="228" text-anchor="middle">Java</text></g>
+              <g class="node-group" data-detail="库存扣减 / 释放"><rect class="node-rect" x="515" y="194" width="120" height="36" rx="4"/><text class="node-label" x="575" y="215" text-anchor="middle">Inventory</text><text class="node-sub" x="575" y="228" text-anchor="middle">Go</text></g>
+            </g>
+
+            <g class="layer-group" data-layer="storage">
+              <rect class="layer-rect" x="30" y="262" width="700" height="60" rx="6"/>
+              <text class="layer-label" x="44" y="284">L4 · Storage</text>
+              <g class="node-group" data-detail="主交易库，单表分库 16 × 64"><rect class="node-rect" x="160" y="274" width="120" height="36" rx="4"/><text class="node-label" x="220" y="295" text-anchor="middle">MySQL</text><text class="node-sub" x="220" y="308" text-anchor="middle">主库 16x64 分片</text></g>
+              <g class="node-group" data-detail="热点订单缓存 + 限流计数"><rect class="node-rect" x="320" y="274" width="120" height="36" rx="4"/><text class="node-label" x="380" y="295" text-anchor="middle">Redis</text><text class="node-sub" x="380" y="308" text-anchor="middle">cluster</text></g>
+              <g class="node-group" data-detail="退款 / 对账事件流"><rect class="node-rect" x="480" y="274" width="120" height="36" rx="4"/><text class="node-label" x="540" y="295" text-anchor="middle">RocketMQ</text><text class="node-sub" x="540" y="308" text-anchor="middle">退款 · 对账 topic</text></g>
+            </g>
+
+            <text x="380" y="356" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#a39c8f" letter-spacing="0.12em">悬停层 / 节点查看详情</text>
+          </svg>
+
+          <div class="diagram-legend">
+            <span><span class="swatch" style="background:#fdfcf8;border:1px solid #1e3a5f"></span>服务节点</span>
+            <span><span class="swatch" style="background:#f3eee4;border:1px solid #d9d2c2"></span>逻辑分层</span>
+            <span><span class="swatch" style="background:transparent;border-top:2px dashed #4a5d7e;width:18px;height:1px;margin-top:5px;border-radius:0"></span>层间数据流</span>
+          </div>
+        </div>
+
+        <h3 id="sol-flow">3.3 关键流程</h3>
+        <p>先看 <em>全景流程图</em>（整体路径），再切到下方 <em>交互走查</em>（每一步看到的界面 + 后端发生的事）。<strong>两者联动</strong>：点击流程图节点，下方 Story 自动跳到对应步骤；Story 切换步骤，流程图当前节点也会高亮。</p>
+
+        <!-- ▼ COMPONENT: Flow SVG · 全景流程图，节点 data-step 与下方 Story 联动 -->
+        <div class="diagram" data-label="Flow · 部分退款主流程">
+          <svg class="flow-master flow-diagram" viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow-flow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,8 L7,4 z" fill="#4a5d7e"/>
+              </marker>
+            </defs>
+
+            <!-- arrows -->
+            <path class="flow-arrow" d="M 120 60 L 160 60" marker-end="url(#arrow-flow)"/>
+            <path class="flow-arrow" d="M 270 60 L 320 60" marker-end="url(#arrow-flow)"/>
+            <path class="flow-arrow" d="M 430 60 L 470 60" marker-end="url(#arrow-flow)"/>
+            <!-- YES: 菱形左下 → 4 审批 -->
+            <path class="flow-arrow" d="M 490 70 L 380 70 L 380 180 L 400 180" marker-end="url(#arrow-flow)"/>
+            <text class="flow-arrow-label" x="320" y="62">YES · &gt;500</text>
+            <!-- NO: 菱形右下 → 5 完成 -->
+            <path class="flow-arrow" d="M 530 70 L 620 70 L 620 160" marker-end="url(#arrow-flow)"/>
+            <text class="flow-arrow-label" x="540" y="62">NO</text>
+            <!-- 4 → 5 -->
+            <path class="flow-arrow" d="M 510 180 L 550 180" marker-end="url(#arrow-flow)"/>
+
+            <!-- nodes (data-step 与下方 Story 联动) -->
+            <g class="flow-node start" data-step="1" data-detail="用户在订单详情页点击退款">
+              <rect class="flow-shape" x="40" y="40" width="80" height="40" rx="20"/>
+              <text class="flow-text" x="80" y="64" text-anchor="middle">① 进入</text>
+            </g>
+            <g class="flow-node" data-step="2" data-detail="勾选要退款的订单项">
+              <rect class="flow-shape" x="160" y="40" width="110" height="40" rx="4"/>
+              <text class="flow-text" x="215" y="64" text-anchor="middle">② 勾选订单项</text>
+            </g>
+            <g class="flow-node" data-step="3" data-detail="确认金额、提交退款申请">
+              <rect class="flow-shape" x="320" y="40" width="110" height="40" rx="4"/>
+              <text class="flow-text" x="375" y="64" text-anchor="middle">③ 提交</text>
+            </g>
+            <g class="flow-node decision" data-detail="单笔 &gt; 500 元需走二级审批">
+              <polygon class="flow-shape" points="510,40 550,60 510,80 470,60"/>
+              <text class="flow-text" x="510" y="64" text-anchor="middle" font-size="10">&gt;500?</text>
+            </g>
+            <g class="flow-node" data-step="4" data-detail="审批人收到 OA 通知，通过后继续">
+              <rect class="flow-shape" x="400" y="160" width="110" height="40" rx="4"/>
+              <text class="flow-text" x="455" y="184" text-anchor="middle">④ 审批</text>
+            </g>
+            <g class="flow-node end" data-step="5" data-detail="调用退款 → 写退款单 → 通知对账">
+              <rect class="flow-shape" x="550" y="160" width="140" height="40" rx="20"/>
+              <text class="flow-text" x="620" y="184" text-anchor="middle">⑤ 退款完成</text>
+            </g>
+          </svg>
+          <div class="diagram-legend">
+            <span><span class="swatch" style="background:#1c1a17"></span>起 / 终</span>
+            <span><span class="swatch" style="background:#fdfcf8;border:1px solid #1c1a17"></span>处理</span>
+            <span><span class="swatch" style="background:#fef4e8;border:1px solid #b8553c"></span>判断</span>
+            <span><span class="swatch" style="background:#b8553c"></span>当前步骤（联动 Story）</span>
+          </div>
+        </div>
+
+        <!-- ▼ COMPONENT: Story Walkthrough · 步骤×界面 mockup×后端 meta 三联动 -->
+        <div class="story" data-active="1" data-total="5">
+          <div class="story-head">
+            <span class="story-head-title">Interactive Walkthrough · 部分退款</span>
+            <span class="story-counter"><strong data-story-current>01</strong> / 05</span>
+          </div>
+
+          <!-- ── step nav ── -->
+          <div class="story-progress">
+            <button class="story-step is-active" data-step="1"><span class="story-step-num">01</span><span class="story-step-label">进入订单</span></button>
+            <button class="story-step" data-step="2"><span class="story-step-num">02</span><span class="story-step-label">选择退款项</span></button>
+            <button class="story-step" data-step="3"><span class="story-step-num">03</span><span class="story-step-label">确认金额</span></button>
+            <button class="story-step" data-step="4"><span class="story-step-num">04</span><span class="story-step-label">二级审批</span></button>
+            <button class="story-step" data-step="5"><span class="story-step-num">05</span><span class="story-step-label">退款完成</span></button>
+          </div>
+
+          <!-- ── stage: mockup + meta ── -->
+          <div class="story-stage">
+
+            <div class="story-mockup">
+              <svg class="phone" viewBox="0 0 240 480" xmlns="http://www.w3.org/2000/svg">
+                <!-- phone frame -->
+                <rect class="phone-body" x="0" y="0" width="240" height="480" rx="28"/>
+                <rect class="phone-screen" x="8" y="8" width="224" height="464" rx="22"/>
+                <rect class="phone-notch" x="100" y="8" width="40" height="14" rx="7"/>
+                <!-- status bar -->
+                <text class="ui-text-muted" x="20" y="34" font-size="9">9:41</text>
+                <rect class="phone-bar" x="200" y="28" width="20" height="6" rx="2"/>
+
+                <!-- ── Screen 1: 订单详情 ── -->
+                <g class="story-screen" data-step="1">
+                  <text class="ui-text" x="20" y="60" font-size="14" font-weight="600">订单详情</text>
+                  <text class="ui-text-muted" x="20" y="74" font-size="9">No. FZ20240526001</text>
+                  <line class="ui-divider" x1="14" y1="84" x2="226" y2="84"/>
+
+                  <rect class="ui-card" x="14" y="94" width="212" height="48" rx="4"/>
+                  <text class="ui-text" x="22" y="112" font-size="11">机票 · PVG → BJS</text>
+                  <text class="ui-text-muted" x="22" y="128" font-size="9">2024-06-12 09:30</text>
+                  <text class="ui-text" x="200" y="128" font-size="11" text-anchor="end">¥800</text>
+
+                  <rect class="ui-card" x="14" y="150" width="212" height="48" rx="4"/>
+                  <text class="ui-text" x="22" y="168" font-size="11">酒店 · 北京嘉里</text>
+                  <text class="ui-text-muted" x="22" y="184" font-size="9">06-12 入 / 06-14 离</text>
+                  <text class="ui-text" x="200" y="184" font-size="11" text-anchor="end">¥1200</text>
+
+                  <rect class="ui-card" x="14" y="206" width="212" height="48" rx="4"/>
+                  <text class="ui-text" x="22" y="224" font-size="11">航空意外险</text>
+                  <text class="ui-text-muted" x="22" y="240" font-size="9">承保期 6/12 - 6/12</text>
+                  <text class="ui-text" x="200" y="240" font-size="11" text-anchor="end">¥80</text>
+
+                  <text class="ui-text-muted" x="20" y="304" font-size="9">合计 ¥2080 · 已支付</text>
+
+                  <rect class="ui-btn" x="14" y="400" width="212" height="36" rx="4"/>
+                  <text class="ui-btn-text" x="120" y="423" font-size="12">申请退款</text>
+                </g>
+
+                <!-- ── Screen 2: 选择退款项 ── -->
+                <g class="story-screen" data-step="2" hidden>
+                  <text class="ui-text" x="20" y="60" font-size="14" font-weight="600">选择退款项</text>
+                  <text class="ui-text-muted" x="20" y="74" font-size="9">勾选要退的商品</text>
+                  <line class="ui-divider" x1="14" y1="84" x2="226" y2="84"/>
+
+                  <rect class="ui-card" x="14" y="94" width="212" height="48" rx="4"/>
+                  <circle class="ui-check-on" cx="30" cy="118" r="7"/>
+                  <path d="M 27 118 L 30 121 L 34 116" stroke="#fff" stroke-width="1.4" fill="none"/>
+                  <text class="ui-text" x="46" y="112" font-size="11">机票 · PVG → BJS</text>
+                  <text class="ui-text-muted" x="46" y="128" font-size="9">可退 ¥800</text>
+                  <text class="ui-text-accent" x="200" y="128" font-size="11" text-anchor="end" font-weight="600">¥800</text>
+
+                  <rect class="ui-card" x="14" y="150" width="212" height="48" rx="4"/>
+                  <circle class="ui-check" cx="30" cy="174" r="7"/>
+                  <text class="ui-text" x="46" y="168" font-size="11">酒店 · 北京嘉里</text>
+                  <text class="ui-text-muted" x="46" y="184" font-size="9">可退 ¥1200</text>
+
+                  <rect class="ui-card" x="14" y="206" width="212" height="48" rx="4"/>
+                  <circle class="ui-check-on" cx="30" cy="230" r="7"/>
+                  <path d="M 27 230 L 30 233 L 34 228" stroke="#fff" stroke-width="1.4" fill="none"/>
+                  <text class="ui-text" x="46" y="224" font-size="11">航空意外险</text>
+                  <text class="ui-text-muted" x="46" y="240" font-size="9">可退 ¥80</text>
+                  <text class="ui-text-accent" x="200" y="240" font-size="11" text-anchor="end" font-weight="600">¥80</text>
+
+                  <text class="ui-text-muted" x="20" y="384" font-size="10">退款合计</text>
+                  <text class="ui-text-accent" x="220" y="384" font-size="14" text-anchor="end" font-weight="700">¥880</text>
+
+                  <rect class="ui-btn" x="14" y="400" width="212" height="36" rx="4"/>
+                  <text class="ui-btn-text" x="120" y="423" font-size="12">下一步</text>
+                </g>
+
+                <!-- ── Screen 3: 确认金额 ── -->
+                <g class="story-screen" data-step="3" hidden>
+                  <text class="ui-text" x="20" y="60" font-size="14" font-weight="600">确认退款</text>
+                  <line class="ui-divider" x1="14" y1="78" x2="226" y2="78"/>
+
+                  <text class="ui-text-muted" x="120" y="130" font-size="10" text-anchor="middle">退款金额</text>
+                  <text class="ui-text-accent" x="120" y="172" font-size="40" text-anchor="middle" font-weight="700">¥880</text>
+
+                  <rect class="ui-card" x="14" y="210" width="212" height="100" rx="4"/>
+                  <text class="ui-text-muted" x="22" y="228" font-size="9">退款明细</text>
+                  <line class="ui-divider" x1="22" y1="236" x2="218" y2="236"/>
+                  <text class="ui-text" x="22" y="254" font-size="10">机票</text>
+                  <text class="ui-text" x="218" y="254" font-size="10" text-anchor="end">¥800</text>
+                  <text class="ui-text" x="22" y="274" font-size="10">航空意外险</text>
+                  <text class="ui-text" x="218" y="274" font-size="10" text-anchor="end">¥80</text>
+                  <line class="ui-divider" x1="22" y1="284" x2="218" y2="284"/>
+                  <text class="ui-text" x="22" y="302" font-size="10" font-weight="600">原路退回 · 支付宝</text>
+
+                  <rect class="ui-btn-accent" x="14" y="400" width="212" height="36" rx="4"/>
+                  <text class="ui-btn-text" x="120" y="423" font-size="12">提交退款申请</text>
+                </g>
+
+                <!-- ── Screen 4: 审批中 ── -->
+                <g class="story-screen" data-step="4" hidden>
+                  <text class="ui-text" x="20" y="60" font-size="14" font-weight="600">审批中</text>
+                  <line class="ui-divider" x1="14" y1="78" x2="226" y2="78"/>
+
+                  <circle cx="120" cy="160" r="36" fill="none" stroke="#c9a96e" stroke-width="3" stroke-dasharray="180 60">
+                    <animateTransform attributeName="transform" type="rotate" from="0 120 160" to="360 120 160" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+                  <text x="120" y="166" font-family="system-ui" font-size="20" text-anchor="middle" fill="#c9a96e" font-weight="700">⏱</text>
+
+                  <rect class="ui-pill" x="80" y="220" width="80" height="20" rx="10"/>
+                  <text class="ui-pill-text" x="120" y="234" text-anchor="middle">PENDING</text>
+
+                  <text class="ui-text" x="120" y="270" font-size="12" text-anchor="middle" font-weight="600">退款金额 ¥880</text>
+                  <text class="ui-text-muted" x="120" y="288" font-size="10" text-anchor="middle">超过 ¥500，需主管审批</text>
+                  <text class="ui-text-muted" x="120" y="304" font-size="10" text-anchor="middle">审批人：张主管</text>
+
+                  <rect class="ui-card" x="14" y="340" width="212" height="40" rx="4"/>
+                  <text class="ui-text-muted" x="22" y="358" font-size="9">提交时间</text>
+                  <text class="ui-text" x="218" y="358" font-size="10" text-anchor="end">06-12 14:32</text>
+                  <text class="ui-text-muted" x="22" y="372" font-size="9">SLA</text>
+                  <text class="ui-text-accent" x="218" y="372" font-size="10" text-anchor="end" font-weight="600">2 小时内</text>
+
+                  <rect class="ui-card" x="14" y="400" width="212" height="36" rx="4"/>
+                  <text class="ui-text" x="120" y="423" text-anchor="middle" font-size="12">查看审批进度</text>
+                </g>
+
+                <!-- ── Screen 5: 完成 ── -->
+                <g class="story-screen" data-step="5" hidden>
+                  <text class="ui-text" x="20" y="60" font-size="14" font-weight="600">退款成功</text>
+                  <line class="ui-divider" x1="14" y1="78" x2="226" y2="78"/>
+
+                  <circle class="ui-success" cx="120" cy="160" r="32"/>
+                  <path d="M 105 160 L 116 172 L 138 148" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                  <text class="ui-text" x="120" y="226" font-size="16" text-anchor="middle" font-weight="700">¥880 已退回</text>
+                  <text class="ui-text-muted" x="120" y="244" font-size="10" text-anchor="middle">支付宝 · 3-5 个工作日到账</text>
+
+                  <rect class="ui-card" x="14" y="270" width="212" height="80" rx="4"/>
+                  <text class="ui-text-muted" x="22" y="288" font-size="9">退款单号</text>
+                  <text class="ui-text" x="218" y="288" font-size="10" text-anchor="end" font-family="JetBrains Mono">RF2024051280</text>
+                  <text class="ui-text-muted" x="22" y="308" font-size="9">退款时间</text>
+                  <text class="ui-text" x="218" y="308" font-size="10" text-anchor="end">06-12 16:48</text>
+                  <text class="ui-text-muted" x="22" y="328" font-size="9">审批人</text>
+                  <text class="ui-text" x="218" y="328" font-size="10" text-anchor="end">张主管</text>
+
+                  <rect class="ui-btn" x="14" y="400" width="212" height="36" rx="4"/>
+                  <text class="ui-btn-text" x="120" y="423" font-size="12">返回订单</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="story-meta">
+
+              <div class="story-card is-active" data-step="1">
+                <h4>用户进入订单详情页</h4>
+                <span class="story-card-sub">客户端 · 加载订单 + 计算可退项</span>
+                <dl class="story-meta-row"><dt>动作</dt><dd>点击「我的订单」→ 选中已支付订单 → 查看详情</dd></dl>
+                <dl class="story-meta-row"><dt>接口</dt><dd><code>GET /v2/order/{id}</code> · 返回订单 + 商品行 + 可退项标记</dd></dl>
+                <dl class="story-meta-row"><dt>校验</dt><dd><ul><li>订单状态必须是「已支付 / 已完成」</li><li>每个商品行计算 <code>refundable_amount</code></li></ul></dd></dl>
+                <dl class="story-meta-row"><dt>产物</dt><dd>退款入口按钮（不可退场景显示置灰 + 原因）</dd></dl>
+              </div>
+
+              <div class="story-card" data-step="2">
+                <h4>用户勾选要退的订单项</h4>
+                <span class="story-card-sub">客户端 · 实时计算预算</span>
+                <dl class="story-meta-row"><dt>动作</dt><dd>勾选机票（¥800）+ 保险（¥80），酒店未勾选</dd></dl>
+                <dl class="story-meta-row"><dt>接口</dt><dd><code>POST /v2/refund/preview</code> · body: <code>{ items: [...] }</code></dd></dl>
+                <dl class="story-meta-row"><dt>校验</dt><dd><ul><li>单项金额 ≤ 商品支付金额</li><li>总额 ≤ 订单实付（防多退）</li><li>互斥规则：机票退则险种自动退</li></ul></dd></dl>
+                <dl class="story-meta-row"><dt>产物</dt><dd>预算金额 ¥880 + 退款规则提示</dd></dl>
+              </div>
+
+              <div class="story-card" data-step="3">
+                <h4>用户确认退款金额并提交</h4>
+                <span class="story-card-sub">Refund Svc · 创建退款单</span>
+                <dl class="story-meta-row"><dt>动作</dt><dd>查看汇总 → 选择退款通道（默认原路） → 提交</dd></dl>
+                <dl class="story-meta-row"><dt>接口</dt><dd><code>POST /v2/refund</code> · 创建退款单 → <code>DRAFT</code> → <code>PENDING</code></dd></dl>
+                <dl class="story-meta-row"><dt>校验</dt><dd><ul><li>幂等：同 idempotency-key 返回原退款单</li><li>金额 &gt; 500 元 → 路由二级审批</li><li>金额 ≤ 500 元 → 跳过审批直接执行</li></ul></dd></dl>
+                <dl class="story-meta-row"><dt>产物</dt><dd>退款单 ID + 状态 PENDING / APPROVED</dd></dl>
+              </div>
+
+              <div class="story-card" data-step="4">
+                <h4>主管审批退款单</h4>
+                <span class="story-card-sub">OA 系统 · 审批通过后异步回调</span>
+                <dl class="story-meta-row"><dt>动作</dt><dd>张主管在 OA 收到审批通知，查看明细后通过</dd></dl>
+                <dl class="story-meta-row"><dt>接口</dt><dd>OA → <code>POST /v2/refund/{id}/approve</code> 回调 Refund Svc</dd></dl>
+                <dl class="story-meta-row"><dt>状态</dt><dd>退款单 <code>PENDING</code> → <code>APPROVED</code>，触发后台执行</dd></dl>
+                <dl class="story-meta-row"><dt>风险</dt><dd>SLA 2 小时未审批 → 自动提醒；超过 24 小时未审批 → 自动驳回 + 通知用户</dd></dl>
+              </div>
+
+              <div class="story-card" data-step="5">
+                <h4>调用退款 & 通知对账</h4>
+                <span class="story-card-sub">Refund Svc → Payment Adapter → 对账 MQ</span>
+                <dl class="story-meta-row"><dt>调用</dt><dd>按子单串行调用 <code>refund.fullRefund</code>（复用现有接口）</dd></dl>
+                <dl class="story-meta-row"><dt>状态</dt><dd><code>APPROVED</code> → <code>REFUNDED</code>（全部子单成功） / <code>PARTIAL_FAILED</code>（部分失败 → 重试 3 次后人工介入）</dd></dl>
+                <dl class="story-meta-row"><dt>下游</dt><dd>发 <code>refund.completed</code> 事件到 RocketMQ，对账系统消费 · 兼容现有 schema 无需改造</dd></dl>
+                <dl class="story-meta-row"><dt>用户</dt><dd>退款成功通知（推送 / 短信），订单详情显示退款明细</dd></dl>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── bottom mini-flow ── -->
+          <div class="story-flow">
+            <svg class="story-flow-svg" viewBox="0 0 720 48" xmlns="http://www.w3.org/2000/svg">
+              <line class="flow-line is-done" x1="60"  y1="22" x2="180" y2="22" data-line="1"/>
+              <line class="flow-line"         x1="180" y1="22" x2="300" y2="22" data-line="2"/>
+              <line class="flow-line"         x1="300" y1="22" x2="420" y2="22" data-line="3"/>
+              <line class="flow-line"         x1="420" y1="22" x2="540" y2="22" data-line="4"/>
+              <line class="flow-line"         x1="540" y1="22" x2="660" y2="22" data-line="5"/>
+              <circle class="flow-dot is-active" cx="60"  cy="22" r="9" data-flow="1"/>
+              <circle class="flow-dot"            cx="180" cy="22" r="7" data-flow="2"/>
+              <circle class="flow-dot"            cx="300" cy="22" r="7" data-flow="3"/>
+              <circle class="flow-dot"            cx="420" cy="22" r="7" data-flow="4"/>
+              <circle class="flow-dot"            cx="540" cy="22" r="7" data-flow="5"/>
+              <circle class="flow-dot"            cx="660" cy="22" r="7" data-flow="end" style="fill:var(--ink);stroke:var(--ink)"/>
+              <text class="flow-cap is-active" x="60"  y="44" data-cap="1">进入</text>
+              <text class="flow-cap"            x="180" y="44" data-cap="2">勾选</text>
+              <text class="flow-cap"            x="300" y="44" data-cap="3">提交</text>
+              <text class="flow-cap"            x="420" y="44" data-cap="4">审批</text>
+              <text class="flow-cap"            x="540" y="44" data-cap="5">退款</text>
+              <text class="flow-cap"            x="660" y="44">完成</text>
+            </svg>
+          </div>
+
+          <!-- ── nav ── -->
+          <div class="story-nav">
+            <button class="story-nav-btn" data-story-prev>← 上一步</button>
+            <button class="story-nav-btn" data-story-next>下一步 →</button>
+          </div>
+        </div>
+
+        <h3 id="sol-state">3.4 状态机</h3>
+        <p>退款单的状态流转。可看到所有终态以及哪些状态可以人工干预。</p>
+        <!-- ▼ COMPONENT: State Machine SVG · 圆形状态 + 标注 transition -->
+        <div class="diagram" data-label="State Machine · 退款单状态">
+          <svg class="state-diagram" viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow-state" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,8 L7,4 z" fill="#4a5d7e"/>
+              </marker>
+            </defs>
+
+            <path class="state-trans" d="M 130 80 C 200 80, 220 80, 270 80"/>
+            <text class="state-trans-label" x="170" y="70">submit</text>
+
+            <path class="state-trans" d="M 360 80 C 400 80, 420 80, 470 80"/>
+            <text class="state-trans-label" x="380" y="70">approve</text>
+
+            <path class="state-trans" d="M 320 110 C 320 150, 600 150, 600 110"/>
+            <text class="state-trans-label" x="430" y="172">reject</text>
+
+            <path class="state-trans" d="M 560 80 C 600 80, 620 80, 670 80"/>
+            <text class="state-trans-label" x="590" y="70">paid</text>
+
+            <path class="state-trans" d="M 510 110 C 510 200, 690 200, 690 110" stroke-dasharray="4 3"/>
+            <text class="state-trans-label" x="570" y="220">fail · retry</text>
+
+            <g class="state-node" data-detail="刚创建未提交"><circle class="state-circle" cx="80" cy="80" r="40"/><text class="state-text" x="80" y="80">DRAFT</text></g>
+            <g class="state-node" data-detail="等待审批人处理"><circle class="state-circle" cx="320" cy="80" r="40"/><text class="state-text" x="320" y="80">PENDING</text></g>
+            <g class="state-node" data-detail="已审批，准备调用退款"><circle class="state-circle" cx="510" cy="80" r="40"/><text class="state-text" x="510" y="80">APPROVED</text></g>
+            <g class="state-node terminal" data-detail="退款成功，对账已落"><circle class="state-circle" cx="710" cy="80" r="40"/><text class="state-text" x="710" y="80">REFUNDED</text></g>
+            <g class="state-node terminal" data-detail="审批驳回，终态"><circle class="state-circle" cx="600" cy="200" r="32"/><text class="state-text" x="600" y="200">REJECTED</text></g>
+          </svg>
+          <div class="diagram-legend">
+            <span><span class="swatch" style="background:#fdfcf8;border:1px solid #1c1a17;border-radius:50%"></span>中间态</span>
+            <span><span class="swatch" style="background:#1c1a17;border-radius:50%"></span>终态</span>
+            <span><span class="swatch" style="background:transparent;border-top:2px dashed #4a5d7e;width:18px;height:1px;margin-top:5px;border-radius:0"></span>条件 transition</span>
+          </div>
+        </div>
+
+        <h3 id="sol-seq">3.5 数据流时序（mermaid 备选）</h3>
+        <p>需要快速画图、不在乎自定义样式时直接用 mermaid。结构化清晰但视觉一般。</p>
+        <pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant U as 用户
+  participant W as Web
+  participant B as BFF
+  participant R as Refund Svc
+  participant P as Payment
+  U->>W: 点击退款
+  W->>B: refund.create(items)
+  B->>R: 校验 + 拆单
+  R->>P: 子单串行退款
+  P-->>R: 退款回执
+  R-->>B: 退款单 + 状态
+  B-->>W: 渲染
+        </pre>
+
+        <h3 id="sol-modules">3.6 模块拆分</h3>
+        <table>
+          <thead><tr><th>模块</th><th>职责</th><th>对外接口</th></tr></thead>
+          <tbody>
+            <tr><td>Refund Svc</td><td>退款单生成 / 状态机 / 审批驱动</td><td><code>POST /v2/refund</code></td></tr>
+            <tr><td>Payment Adapter</td><td>对接现有全额退款接口</td><td>内部 RPC</td></tr>
+            <tr><td>Order Detail BFF</td><td>退款入口 / 选项展示</td><td>GraphQL</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="sol-detail">3.7 详细设计</h3>
+        <h4 id="sol-detail-schema">3.7.1 数据结构</h4>
+<pre><code>interface OrderItem {
+  id: string;
+  amount: number;          // 单位：分
+  status: 'paid' | 'refunded' | 'partial';
+}</code></pre>
+
+        <h4 id="sol-detail-api">3.7.2 接口签名</h4>
+<pre><code>POST /api/v2/refund
+{
+  "orderId": "string",
+  "items": [{ "itemId": "string", "amount": number }]
+}</code></pre>
+
+        <!-- ▼ COMPONENT: Details · 折叠长内容，summary 显示标题 + 计数 -->
+        <details class="fold">
+          <summary>错误码完整列表 <span class="count">12 项</span></summary>
+          <div class="fold-body">
+            <table>
+              <thead><tr><th>Code</th><th>含义</th><th>处理建议</th></tr></thead>
+              <tbody>
+                <tr><td><code>REFUND_001</code></td><td>订单不存在</td><td>前端提示，引导刷新</td></tr>
+                <tr><td><code>REFUND_002</code></td><td>已退款过该项</td><td>幂等返回原退款单</td></tr>
+                <tr><td><code>REFUND_003</code></td><td>金额超出可退上限</td><td>显示可退金额</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <p class="todo">补充字段约束、降级方案细节。</p>
+      </section>
+
+      <div class="ornament">⁂</div>
+
+      <!--
+        ── 04 · 待确认事项（可选 section · 长方案推荐） ──────────
+        正文里散落的 <p class="todo"> / <span class="todo-tag">TODO</span> 在长方案里难追踪。
+        起一张集中表，按类别分组（产品 / 外部依赖 / 基础设施 / 技术选型 / 产研流程 等），
+        让每一条都有 owner + 预期完成时间。
+        如果方案体量小（< 1000 字 / 无明显未定项），直接删除整个 section 不留空标题。
+      -->
+      <section id="open-questions">
+        <h2><span class="num">04 · Open</span>待确认事项</h2>
+        <p>正文以 <code>&lt;p class="todo"&gt;</code> 或 <code>&lt;span class="todo-tag"&gt;</code> 标注的开放问题汇总于此，按类别分组便于按 owner 分头推进。</p>
+        <table>
+          <thead><tr><th style="width:48px">#</th><th style="width:140px">类别</th><th>事项</th><th style="width:110px">责任人</th><th style="width:120px">预期完成时间</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>产品 · 某模块</td><td>方案某关键点待产品确认（如审批级数 / 调价规则）</td><td></td><td></td></tr>
+            <tr><td>2</td><td>外部依赖</td><td>对接形式 / SLA / 限流配额 待外部团队对齐</td><td></td><td></td></tr>
+            <tr><td>3</td><td>基础设施</td><td>资源申请 / 命名 / 配额 / 监控告警 待运维确认</td><td></td><td></td></tr>
+            <tr><td>4</td><td>产研计划</td><td>角色补全 + 里程碑日期，待上述前置项落定后细化</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="ornament">⁂</div>
+
+      <section id="risk">
+        <h2><span class="num">05 · Risks</span>技术风险分析</h2>
+        <p>把每条风险按「概率 × 影响」放到二维网格里，右上角的风险最优先处理。</p>
+        <!-- ▼ COMPONENT: Risk Matrix SVG · dot 按真实 data-x/data-y (0-1) 坐标定位 + 碰撞避让 -->
+        <div class="diagram" data-label="Risk Matrix · 风险二维评估">
+          <svg class="risk-matrix-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="riskGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#6a9b6c" stop-opacity="0.18"/>
+                <stop offset="50%"  stop-color="#c9a96e" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#b8553c" stop-opacity="0.22"/>
+              </linearGradient>
+            </defs>
+
+            <!-- 警戒区域：左下绿 → 右上红 渐变 -->
+            <rect x="80" y="20" width="460" height="280" fill="url(#riskGrad)" stroke="var(--rule)"/>
+
+            <!-- 3×3 参考网格 -->
+            <line x1="80"  y1="113" x2="540" y2="113" class="risk-gridline"/>
+            <line x1="80"  y1="207" x2="540" y2="207" class="risk-gridline"/>
+            <line x1="233" y1="20"  x2="233" y2="300" class="risk-gridline"/>
+            <line x1="386" y1="20"  x2="386" y2="300" class="risk-gridline"/>
+
+            <!-- 坐标轴 -->
+            <line x1="80" y1="20"  x2="80"  y2="300" class="risk-axis"/>
+            <line x1="80" y1="300" x2="540" y2="300" class="risk-axis"/>
+            <text x="40" y="160" text-anchor="middle" transform="rotate(-90 40 160)" class="risk-axis-label">影响 ▲</text>
+            <text x="310" y="340" text-anchor="middle" class="risk-axis-label">概率 ▶</text>
+            <text x="70" y="304" text-anchor="end" class="risk-axis-tick">低</text>
+            <text x="70" y="164" text-anchor="end" class="risk-axis-tick">中</text>
+            <text x="70" y="32"  text-anchor="end" class="risk-axis-tick">高</text>
+            <text x="156" y="318" text-anchor="middle" class="risk-axis-tick">低</text>
+            <text x="310" y="318" text-anchor="middle" class="risk-axis-tick">中</text>
+            <text x="463" y="318" text-anchor="middle" class="risk-axis-tick">高</text>
+
+            <!-- dots: data-x / data-y 是 0-1 浮点，JS 自动算 cx/cy + 避让 -->
+            <g class="risk-dot" data-x="0.78" data-y="0.85" data-sev="high"   data-detail="对账系统未及时联动 schema 变更"><circle r="14"/><text>1</text></g>
+            <g class="risk-dot" data-x="0.55" data-y="0.55" data-sev="medium" data-detail="多笔串行调用耗时长 — 已上限 N=10"><circle r="14"/><text>2</text></g>
+            <g class="risk-dot" data-x="0.50" data-y="0.28" data-sev="low"    data-detail="多文案版本不一致 — 影响小，概率中"><circle r="14"/><text>3</text></g>
+          </svg>
+          <div class="diagram-legend">
+            <span><span class="swatch" style="background:#b8553c;border-radius:50%"></span>高严重度</span>
+            <span><span class="swatch" style="background:#c9a96e;border-radius:50%"></span>中严重度</span>
+            <span><span class="swatch" style="background:#6a9b6c;border-radius:50%"></span>低严重度</span>
+            <span>渐变 = 风险区域（右上更危险）</span>
+          </div>
+        </div>
+
+        <table>
+          <thead><tr><th>#</th><th>风险</th><th>概率</th><th>影响</th><th>缓解方案</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>对账系统未及时联动</td><td>中</td><td>高</td><td>预先与对账方同步 schema，灰度时双跑对账</td></tr>
+            <tr><td>2</td><td>多笔串行调用超时</td><td>中</td><td>中</td><td>子单上限 N=10，超出走异步退款</td></tr>
+            <tr><td>3</td><td>多文案版本不一致</td><td>中</td><td>低</td><td>退款详情页统一渲染，文案沉淀到字典</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="scope">
+        <h2><span class="num">06 · Impact</span>影响范围</h2>
+        <div class="grid-2">
+          <div class="card"><h4>代码 / 接口</h4><ul><li>...</li></ul></div>
+          <div class="card"><h4>数据 / 配置</h4><ul><li>...</li></ul></div>
+          <div class="card"><h4>上下游依赖</h4><ul><li>...</li></ul></div>
+          <div class="card"><h4>灰度 / 回滚</h4><ul><li>...</li></ul></div>
+        </div>
+      </section>
+
+      <section id="plan">
+        <h2><span class="num">07 · Plan</span>产研计划</h2>
+
+        <h3 id="plan-people">6.1 相关人员</h3>
+        <dl class="kv">
+          <dt>产品</dt><dd>—</dd>
+          <dt>后端</dt><dd>—</dd>
+          <dt>前端</dt><dd>—</dd>
+          <dt>测试</dt><dd>—</dd>
+          <dt>设计</dt><dd>—</dd>
+        </dl>
+
+        <h3 id="plan-milestone">6.2 里程碑</h3>
+        <!-- ▼ COMPONENT: Timeline SVG · 每行 track 是 SVG (viewBox 1000x30, x/width = % 时间窗)；milestone 菱形；today 线 absolute overlay -->
+        <div class="timeline" style="--cols: 4; --today: 62%">
+          <div class="timeline-axis">
+            <span>06 月 W1</span><span>06 月 W2</span><span>06 月 W3</span><span>06 月 W4</span>
+          </div>
+          <div class="timeline-rows">
+            <div class="timeline-row">
+              <span class="timeline-task">方案评审</span>
+              <svg class="timeline-track" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                <rect class="timeline-bar is-review" x="0" y="6" width="80" height="18" rx="2"/>
+                <text class="timeline-bar-text" x="8" y="18">2d</text>
+              </svg>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-task">后端开发</span>
+              <svg class="timeline-track" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                <rect class="timeline-bar" x="100" y="6" width="500" height="18" rx="2"/>
+                <rect class="timeline-bar-progress" x="100" y="6" width="180" height="18" rx="2"/>
+                <text class="timeline-bar-text" x="108" y="18">10d · 36%</text>
+              </svg>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-task">前端开发</span>
+              <svg class="timeline-track" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                <rect class="timeline-bar" x="250" y="6" width="450" height="18" rx="2"/>
+                <rect class="timeline-bar-progress" x="250" y="6" width="100" height="18" rx="2"/>
+                <text class="timeline-bar-text" x="258" y="18">9d · 22%</text>
+              </svg>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-task">联调 + QA</span>
+              <svg class="timeline-track" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                <rect class="timeline-bar is-test" x="600" y="6" width="250" height="18" rx="2"/>
+                <text class="timeline-bar-text" x="608" y="18">5d</text>
+              </svg>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-task">⬥ 灰度</span>
+              <svg class="timeline-track" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                <polygon class="timeline-milestone" points="850,15 866,5 882,15 866,25"/>
+              </svg>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-task">⬥ 上线</span>
+              <svg class="timeline-track" viewBox="0 0 1000 30" preserveAspectRatio="none">
+                <polygon class="timeline-milestone" points="960,15 976,5 992,15 976,25"/>
+              </svg>
+            </div>
+          </div>
+          <!-- today 线：跨所有 track 行的 overlay -->
+          <div class="timeline-today" aria-hidden="true"><span>今天</span></div>
+        </div>
+      </section>
+
+      <footer class="doc-foot">
+        <span>— 文档完 —</span>
+        <span>tech-spec-html · v1</span>
+      </footer>
+    </main>
+
+  </div>
+
+  <div id="node-tooltip" data-kind="detail"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        background: '#fdfcf8',
+        primaryColor: '#faf8f3',
+        primaryTextColor: '#1c1a17',
+        primaryBorderColor: '#1e3a5f',
+        lineColor: '#6f6a60',
+        secondaryColor: '#f3eee4',
+        tertiaryColor: '#fdfcf8',
+        fontFamily: 'Source Serif 4, Songti SC, serif'
+      },
+      securityLevel: 'loose'
+    });
+
+    // ── meta sync ─────────────────────────────────
+    const meta = (n) => document.head.querySelector('meta[name="' + n + '"]')?.content || '';
+    const author = meta('author'); if (author) document.getElementById('meta-author').textContent = author;
+    const date = meta('date'); if (date) document.getElementById('meta-date').textContent = date;
+    const status = meta('status') || 'draft';
+    const sEl = document.getElementById('meta-status');
+    sEl.textContent = status;
+    sEl.className = 'status-pill ' + status;
+
+    // ── TOC active highlighting ───────────────────
+    // 同时观察 section / h3 / h4 上的 id,让 TOC 三级目录都能跟随滚动高亮。
+    const scrollTargets = document.querySelectorAll('section[id], h3[id], h4[id]');
+    const tocItems = document.querySelectorAll('nav.toc li');
+    const tocLinkById = new Map();
+    tocItems.forEach(li => {
+      const a = li.querySelector(':scope > a');
+      if (a) {
+        const href = a.getAttribute('href') || '';
+        if (href.startsWith('#')) tocLinkById.set(href.slice(1), li);
+      }
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const li = tocLinkById.get(entry.target.id);
+          if (!li) return;
+          tocItems.forEach(item => item.classList.remove('active'));
+          li.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    scrollTargets.forEach(t => observer.observe(t));
+
+    // ── architecture: hover layer focus ───────────
+    const archDiagram = document.querySelector('.arch-diagram');
+    if (archDiagram) {
+      const layers = archDiagram.querySelectorAll('.layer-group');
+      layers.forEach(layer => {
+        layer.addEventListener('mouseenter', () => {
+          archDiagram.setAttribute('data-hover', '1');
+          layers.forEach(l => l.classList.toggle('is-hover', l === layer));
+        });
+        layer.addEventListener('mouseleave', () => {
+          archDiagram.removeAttribute('data-hover');
+          layers.forEach(l => l.classList.remove('is-hover'));
+        });
+      });
+    }
+
+    // ── Story Walkthrough · step switching ─────────────────
+    document.querySelectorAll('.story').forEach(story => {
+      const total = parseInt(story.dataset.total || '5', 10);
+      const counterEl = story.querySelector('[data-story-current]');
+      const prevBtn = story.querySelector('[data-story-prev]');
+      const nextBtn = story.querySelector('[data-story-next]');
+      let active = parseInt(story.dataset.active || '1', 10);
+      const pad = (n) => String(n).padStart(2, '0');
+
+      function render() {
+        story.dataset.active = active;
+        if (counterEl) counterEl.textContent = pad(active);
+        story.querySelectorAll('.story-step').forEach(b => {
+          const n = +b.dataset.step;
+          b.classList.toggle('is-active', n === active);
+          b.classList.toggle('is-done', n < active);
+        });
+        story.querySelectorAll('.story-screen').forEach(s => {
+          s.hidden = +s.dataset.step !== active;
+        });
+        story.querySelectorAll('.story-card').forEach(c => {
+          c.classList.toggle('is-active', +c.dataset.step === active);
+        });
+        story.querySelectorAll('.flow-dot[data-flow]').forEach(d => {
+          const n = d.dataset.flow === 'end' ? 999 : +d.dataset.flow;
+          d.classList.toggle('is-active', n === active);
+          d.classList.toggle('is-done', n < active);
+        });
+        story.querySelectorAll('.flow-cap[data-cap]').forEach(t => {
+          t.classList.toggle('is-active', +t.dataset.cap === active);
+        });
+        story.querySelectorAll('.flow-line[data-line]').forEach(l => {
+          l.classList.toggle('is-done', +l.dataset.line < active);
+        });
+        document.querySelectorAll('.flow-master .flow-node[data-step]').forEach(n => {
+          n.classList.toggle('is-current', +n.dataset.step === active);
+        });
+        if (prevBtn) prevBtn.disabled = active <= 1;
+        if (nextBtn) nextBtn.disabled = active >= total;
+      }
+      function setStep(n) {
+        if (n < 1 || n > total) return;
+        active = n; render();
+      }
+
+      story.querySelectorAll('.story-step').forEach(b => {
+        b.addEventListener('click', () => setStep(+b.dataset.step));
+      });
+      story.querySelectorAll('.flow-dot[data-flow]').forEach(d => {
+        const n = d.dataset.flow === 'end' ? null : +d.dataset.flow;
+        if (n) d.addEventListener('click', () => setStep(n));
+      });
+      document.querySelectorAll('.flow-master .flow-node[data-step]').forEach(node => {
+        node.addEventListener('click', () => setStep(+node.dataset.step));
+      });
+      if (prevBtn) prevBtn.addEventListener('click', () => setStep(active - 1));
+      if (nextBtn) nextBtn.addEventListener('click', () => setStep(active + 1));
+
+      render();
+    });
+
+    // ── Risk Matrix dot 坐标计算 + 碰撞避让 ─────────
+    // dot 用 data-x / data-y (0-1) 提供概率/影响坐标，JS 自动算 cx/cy。
+    // 矩阵 viewBox 区域: x 80→540 (宽 460), y 20→300 (高 280)，y 轴翻转。
+    document.querySelectorAll('.risk-matrix-svg').forEach(svg => {
+      const dots = Array.from(svg.querySelectorAll('.risk-dot'));
+      const positions = dots.map(g => {
+        const x = parseFloat(g.dataset.x || '0.5');
+        const y = parseFloat(g.dataset.y || '0.5');
+        return { g, cx: 80 + 460 * x, cy: 300 - 280 * y };
+      });
+      // 碰撞避让：距离 < 32px 时把后一个推开
+      for (let i = 0; i < positions.length; i++) {
+        for (let j = i + 1; j < positions.length; j++) {
+          const a = positions[i], b = positions[j];
+          const dx = b.cx - a.cx, dy = b.cy - a.cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 0.1) { b.cx += 18; b.cy -= 18; }
+          else if (dist < 32) {
+            const push = (32 - dist) + 1;
+            const ang = Math.atan2(dy, dx);
+            b.cx += Math.cos(ang) * push;
+            b.cy += Math.sin(ang) * push;
+          }
+        }
+      }
+      positions.forEach(({ g, cx, cy }) => {
+        const c = g.querySelector('circle');
+        const t = g.querySelector('text');
+        c.setAttribute('cx', cx);
+        c.setAttribute('cy', cy);
+        t.setAttribute('x', cx);
+        t.setAttribute('y', cy);
+      });
+    });
+
+    // ── tooltip for any [data-detail] node ────────
+    const tooltip = document.getElementById('node-tooltip');
+    document.querySelectorAll('[data-detail]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        tooltip.textContent = el.dataset.detail;
+        tooltip.classList.add('show');
+      });
+      el.addEventListener('mousemove', (e) => {
+        tooltip.style.left = (e.clientX + 14) + 'px';
+        tooltip.style.top  = (e.clientY + 14) + 'px';
+      });
+      el.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('show');
+      });
+    });
+  </script>
+</body>
+</html>

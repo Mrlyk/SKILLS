@@ -5,7 +5,7 @@
 **AI Agent Skill 个人收藏库**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Skills Count](https://img.shields.io/badge/skills-12-orange.svg)](#-skill-收藏库)
+[![Skills Count](https://img.shields.io/badge/skills-14-orange.svg)](#-skill-收藏库)
 
 [English](README_EN.md)
 
@@ -68,6 +68,13 @@ SKILLS/
 │   ├── evaluating-skills/           # 评估 SKILL.md 是否符合最佳实践
 │   │   ├── SKILL.md
 │   │   └── references/
+│   ├── tech-spec-html/              # 把需求/思考/纪要写成单页 HTML 技术方案
+│   │   ├── SKILL.md
+│   │   ├── assets/
+│   │   ├── references/
+│   │   └── evals/
+│   ├── clean-disk-space/            # 保守式磁盘空间分析与清理工作流
+│   │   └── SKILL.md
 │   └── ui-design/                   # UI 前端设计 Skill 合集
 │       ├── README.md
 │       ├── frontend-design/         # 核心 Skill（含 reference/）
@@ -151,6 +158,8 @@ npx skills add Mrlyk/SKILLS -a claude-code -a cursor
 | [anthropic-diagram](skills/anthropic-diagram/SKILL.md) | 生成 Anthropic 博客风格的编辑型图表，输出 .drawio 文件，温暖简洁的语义化颜色系统，支持 12 种图表模式 | [dingtingli/dtl-skills](https://github.com/dingtingli/dtl-skills/tree/main) |
 | [anthropic-svg](skills/anthropic-svg/SKILL.md) | 生成 Anthropic 博客风格的编辑型图表，输出原生 .svg 文件，无需安装额外软件，支持 10 种图表模式 | 个人整理 |
 | [evaluating-skills](skills/evaluating-skills/SKILL.md) | 按 Anthropic 与 agentskills.io 最佳实践评估单个 SKILL.md，输出分维度评分与可执行的改写建议 | 个人整理 |
+| [tech-spec-html](skills/tech-spec-html/SKILL.md) | 把需求/思考/会议纪要写成单页 HTML 技术方案 / Design Doc，内置 9 类可视化组件（metric / compare / SVG 架构 / flow / 状态机 / risk matrix / 甘特 等）+ 三级目录侧栏，支持新建与增量更新两种工作流 | 个人整理 |
+| [clean-disk-space](skills/clean-disk-space/SKILL.md) | 保守式磁盘空间分析与清理工作流，先只读分析→出报告→dry-run→显式审批→分批删除→复核，只清理缓存/日志/临时/构建产物，默认保护数据、项目、模型与工具链 | 个人整理 |
 
 ---
 
