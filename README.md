@@ -67,7 +67,8 @@ SKILLS/
 │   │   └── README.md
 │   ├── evaluating-skills/           # 评估 SKILL.md 是否符合最佳实践
 │   │   ├── SKILL.md
-│   │   └── references/
+│   │   ├── references/
+│   │   └── README.md
 │   ├── tech-spec-html/              # 把需求/思考/纪要写成单页 HTML 技术方案
 │   │   ├── SKILL.md
 │   │   ├── assets/

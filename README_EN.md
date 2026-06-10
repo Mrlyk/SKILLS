@@ -67,7 +67,8 @@ SKILLS/
 │   │   └── README.md
 │   ├── evaluating-skills/           # Evaluate a SKILL.md against best practices
 │   │   ├── SKILL.md
-│   │   └── references/
+│   │   ├── references/
+│   │   └── README.md
 │   ├── tech-spec-html/              # Turn a requirement/draft/meeting note into a single-page HTML tech spec
 │   │   ├── SKILL.md
 │   │   ├── assets/
