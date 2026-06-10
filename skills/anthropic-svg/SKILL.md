@@ -78,7 +78,7 @@ Writing this out is an internal planning step — clarify the structure in your 
 ### SVG document structure
 
 ```xml
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}">
   <defs>
     <!-- Arrow markers go here -->
   </defs>
@@ -91,7 +91,7 @@ Writing this out is an internal planning step — clarify the structure in your 
 </svg>
 ```
 
-Use `viewBox="0 0 {width} {height}"` with no fixed `width`/`height` attributes, so the SVG scales adaptively. Typical canvas sizes:
+Set both `viewBox="0 0 {width} {height}"` and matching `width="{width}" height="{height}"` attributes. The width/height give the SVG an intrinsic default size so it renders at design size in IDE/Markdown previews instead of stretching to fill the container, while the viewBox keeps it scalable when embedded with CSS sizing. Typical canvas sizes:
 - Simple diagrams (3-6 nodes): `0 0 1000 600`
 - Medium diagrams (7-12 nodes): `0 0 1200 800`
 - Complex diagrams (13-20 nodes): `0 0 1400 1000`
@@ -313,7 +313,7 @@ For pattern-specific layout rules, read `references/pattern-library.md`.
 
 Before finalizing the SVG, verify:
 
-- [ ] SVG root has `xmlns="http://www.w3.org/2000/svg"` and `viewBox` (no fixed width/height)
+- [ ] SVG root has `xmlns="http://www.w3.org/2000/svg"`, `viewBox`, and matching `width`/`height` attributes (intrinsic default size)
 - [ ] `<defs>` section contains all needed arrow markers with open chevron `<polyline>`
 - [ ] Background `<rect>` with `fill="#F2EFE8"` is present
 - [ ] Outer border `<rect>` is present (x=20, y=20, covers content + padding)
